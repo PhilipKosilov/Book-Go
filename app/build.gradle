@@ -39,10 +39,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
-    // remove when create Core extension
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     // remove when add navigation
-    implementation 'androidx.fragment:fragment-ktx:1.5.1'
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     implementation project(":core")
 
