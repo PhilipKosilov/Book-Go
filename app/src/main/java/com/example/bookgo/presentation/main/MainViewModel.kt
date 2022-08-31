@@ -13,7 +13,10 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val checkLogin: CheckLoginUseCase
-): ViewModel() {
+) : ViewModel() {
+
+    private var _isLoading = MutableLiveData<Boolean>()
+    var isLoading: LiveData<Boolean> = _isLoading
 
     private val _launchMainScreenEvent = MutableUnitLiveEvent()
     val launchMainScreenEvent = _launchMainScreenEvent.toLiveEvent()
@@ -31,6 +34,8 @@ class MainViewModel(
             } else {
                 _launchAuthorizationEvent.publishEvent()
             }
+
+            _isLoading.postValue(false)
         }
     }
 }

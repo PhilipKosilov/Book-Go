@@ -5,10 +5,14 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/mainActivity">
 
+    <!-- currently not used. Graph is set dynamically -->
+
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.bookgo.presentation.main.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+
+    <include app:graph="@navigation/auth_graph" />
 
 </navigation>

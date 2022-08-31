@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_graph"
+    app:startDestination="@id/sign_in_fragment">
+
+    <fragment
+        android:id="@+id/sign_in_fragment"
+        android:name="com.example.bookgo.feature_auth.presentation.signin.SignInFragment"
+        android:label="@string/screen_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/sign_up_fragment" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="android-app://bookgo.app/sign_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_up_fragment"
+        android:name="com.example.bookgo.feature_auth.presentation.signup.SignUpFragment"
+        android:label="@string/screen_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <argument
+            android:name="email"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+</navigation>
