@@ -5,4 +5,8 @@
         android:title="@string/hotels"
         android:icon="@drawable/hotels_icon"/>
 
+    <item android:id="@id/favorites_graph"
+        android:title="@string/favorites"
+        android:icon="@drawable/favorite_icon"/>
+
 </menu>

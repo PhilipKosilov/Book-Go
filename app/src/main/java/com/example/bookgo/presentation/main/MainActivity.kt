@@ -47,13 +47,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchMainScreen() {
+        // works with bottom navigation
         navHostFragment.findNavController()
-            .setGraph(com.example.bookgo.feature_hotels.R.navigation.hotels_graph)
+            .setGraph(R.navigation.tabs_graph)
+
         setupActionBar() //only after setting graph
         enableBottomNavigation()
     }
 
     private fun enableBottomNavigation() {
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
