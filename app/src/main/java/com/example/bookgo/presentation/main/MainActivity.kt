@@ -13,7 +13,6 @@ import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.databinding.ActivityMainBinding
 import com.example.bookgo.domain.use_case.CheckLoginUseCase
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -28,14 +27,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // todo: crashes because BottomNavigation while trying to inflate
-//        binding = ActivityMainBinding.inflate(layoutInflater)
 
         setupSplash()
         setupViewModelObservers()
 
-        setContentView(R.layout.activity_main)
-//        setContentView(binding.root)
+        // Has to be AFTER setupSplash to inflate BottomNavigationView
+        // with Theme.App.Starting, that is not based on Theme.AppCompat. Otherwise crashes.
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     private fun setupViewModelObservers() {
@@ -55,10 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun enableBottomNavigation() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
-        bottomNavigationView.visibility = View.VISIBLE
-
-//        binding.bottomNavigationView.visibility = View.VISIBLE
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
     private fun launchAuthorization() {
