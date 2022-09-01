@@ -14,5 +14,6 @@
         tools:layout="@layout/activity_main" />
 
     <include app:graph="@navigation/auth_graph" />
+    <include app:graph="@navigation/hotels_graph" />
 
 </navigation>

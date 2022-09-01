@@ -15,7 +15,6 @@ import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
 import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
 
 
-// todo : rename everything
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private lateinit var binding: FragmentSignInBinding
@@ -73,9 +72,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun observeNavigateToTabsEvent() = viewModel.navigateToTabsEvent.observeEvent(viewLifecycleOwner) {
-        //todo set actual deeplink
         val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://example.google.app/tabs_fragment".toUri())
+            .fromUri("android-app://bookgo.app/hotels".toUri())
             .build()
         findNavController().navigate(request)
     }

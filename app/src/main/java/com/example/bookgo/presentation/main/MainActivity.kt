@@ -32,11 +32,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewModelObservers() {
         viewModel.launchMainScreenEvent.observeEvent(this) {
-
+            launchMainScreen()
         }
         viewModel.launchAuthorizationEvent.observeEvent(this) {
             launchAuthorization()
         }
+    }
+
+    private fun launchMainScreen() {
+        navHostFragment.findNavController()
+            .setGraph(com.example.bookgo.feature_hotels.R.navigation.hotels_graph)
+        setupActionBar() //only after setting graph
     }
 
     private fun launchAuthorization() {
