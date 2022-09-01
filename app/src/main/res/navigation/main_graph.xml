@@ -3,17 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/mainActivity">
+    app:startDestination="@id/tabsFragment">
 
-    <!-- currently not used. Graph is set dynamically -->
-
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.bookgo.presentation.main.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
 
     <include app:graph="@navigation/auth_graph" />
     <include app:graph="@navigation/hotels_graph" />
+
+    <fragment
+        android:id="@+id/tabsFragment"
+        android:name="com.example.bookgo.presentation.tabs.TabsFragment"
+        android:label="fragment_tabs"
+        tools:layout="@layout/fragment_tabs" />
 
 </navigation>
