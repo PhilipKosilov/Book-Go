@@ -4,9 +4,11 @@
     <item android:id="@id/hotels_graph"
         android:title="@string/hotels"
         android:icon="@drawable/hotels_icon"/>
-
     <item android:id="@id/favorites_graph"
         android:title="@string/favorites"
         android:icon="@drawable/favorite_icon"/>
+    <item android:id="@id/settings_graph"
+        android:title="@string/settings"
+        android:icon="@drawable/settings_icon"/>
 
 </menu>
