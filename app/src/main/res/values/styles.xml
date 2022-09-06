@@ -3,6 +3,7 @@
     <style name="GlobalTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:minWidth">@dimen/big_width</item>
     </style>
+
     <style name="GlobalButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:textAllCaps">false</item>
     </style>

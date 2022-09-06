@@ -4,7 +4,7 @@ import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.data.models.entities.SignUpData
 
 /**
- * Repository with account-related actions, e.g. sign-in, sign-up, edit account etc.
+ * Repository with account-related actions, e.g. sign-in, sign-up etc.
  */
 interface AccountRepository {
 
@@ -15,13 +15,11 @@ interface AccountRepository {
 
     /**
      * Try to sign-in with the email and password.
-     * @throws [EmptyFieldException], [AuthException]
      */
     suspend fun signIn(signInData: SignInData): Boolean
 
     /**
      * Create a new account.
-     * @throws [EmptyFieldException], [PasswordMismatchException], [AccountAlreadyExistsException]
      */
     suspend fun signUp(signUpData: SignUpData)
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
+// Use this to get non-nullable value from LiveData
 fun <T> LiveData<T>.requireValue(): T {
     return this.value ?: throw IllegalStateException("LiveData value is empty")
 }
@@ -22,7 +23,7 @@ fun <T> MutableLiveEvent<T>.publishEvent(value: T) {
     this.value = Event(value)
 }
 
-// Use this instead regular observe
+// Use this instead regular observe when dealing with Event
 fun <T> LiveEvent<T>.observeEvent(lifecycleOwner: LifecycleOwner, listener: EventListener<T>) {
     this.observe(lifecycleOwner) {
         it?.get()?.let { value ->
@@ -31,8 +32,7 @@ fun <T> LiveEvent<T>.observeEvent(lifecycleOwner: LifecycleOwner, listener: Even
     }
 }
 
-// --- unit events:
-
+// Unit events for when you don't need to return values
 typealias MutableUnitLiveEvent = MutableLiveEvent<Unit>
 typealias UnitLiveEvent = LiveEvent<Unit>
 typealias UnitEventListener = () -> Unit

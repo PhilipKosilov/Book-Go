@@ -2,7 +2,7 @@ package com.example.bookgo.core.data.models.entities
 
 
 /**
- * Fields that should be provided during creating a new account.
+ * Entity containing data needed to sign in.
  */
 data class SignInData(
     val email: String,

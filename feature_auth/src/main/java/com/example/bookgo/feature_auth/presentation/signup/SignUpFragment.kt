@@ -14,6 +14,7 @@ import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignUpBinding
 import com.example.bookgo.feature_auth.di.AuthComponentProvider
 import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
+import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
 import com.example.bookgo.feature_auth.presentation.signin.SignInFragment
 import javax.inject.Inject
 
@@ -41,6 +42,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             binding.emailEditText.setText(getEmailArgument())
         }
 
+        setupViewModelObservers()
+    }
+
+    private fun setupViewModelObservers() {
         observeInvalidUsernameEvent()
         observeInvalidEmailEvent()
         observeInvalidPasswordEvent()
@@ -51,7 +56,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     private fun observeErrorEvent() = viewModel.showErrorToast.observeEvent(viewLifecycleOwner) {
-        Toast.makeText(requireContext(), "Email is taken", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), resolveErrorMessage(it), Toast.LENGTH_LONG).show()
     }
 
     private fun onCreateAccountButtonPressed() {
@@ -79,22 +84,22 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun observeInvalidUsernameEvent() =
         viewModel.showInvalidUserName.observe(viewLifecycleOwner) {
-            binding.usernameTextInput.error = it
+            binding.usernameTextInput.error = resolveErrorMessage(it)
         }
 
     private fun observeInvalidEmailEvent() =
         viewModel.showInvalidEmail.observe(viewLifecycleOwner) {
-            binding.emailTextInput.error = it
+            binding.emailTextInput.error = resolveErrorMessage(it)
         }
 
     private fun observeInvalidPasswordEvent() =
         viewModel.showInvalidPassword.observe(viewLifecycleOwner) {
-            binding.passwordTextInput.error = it
+            binding.passwordTextInput.error = resolveErrorMessage(it)
         }
 
     private fun observeInvalidPasswordRepeatEvent() =
         viewModel.showInvalidRepeatPassword.observe(viewLifecycleOwner) {
-            binding.repeatPasswordTextInput.error = it
+            binding.repeatPasswordTextInput.error = resolveErrorMessage(it)
         }
 
     private fun getEmailArgument(): String? = args.email

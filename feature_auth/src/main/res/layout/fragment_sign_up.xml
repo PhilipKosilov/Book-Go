@@ -30,7 +30,6 @@
                 android:lines="1"
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionNext" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +51,6 @@
                 android:lines="1"
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionNext" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -73,8 +71,8 @@
                 android:lines="1"
                 android:inputType="textPassword"
                 android:imeOptions="actionNext" />
-
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/repeat_password_text_input"
             android:layout_width="wrap_content"
@@ -93,15 +91,13 @@
                 android:lines="1"
                 android:inputType="textPassword"
                 android:imeOptions="actionDone" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- in both SingIn and SignUp we have Sign UP buttons.  what to do? -->
         <Button
             android:id="@+id/create_account_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_sign_up"
+            android:text="@string/create_account"
             android:layout_marginTop="@dimen/large_space"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +113,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/create_account_button"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

@@ -13,7 +13,6 @@ import com.example.bookgo.feature_hotels.databinding.FragmentHotelDetailsBinding
 class HotelDetailsFragment : Fragment() {
     lateinit var binding: FragmentHotelDetailsBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

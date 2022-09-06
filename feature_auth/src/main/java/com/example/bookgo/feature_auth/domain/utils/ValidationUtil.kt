@@ -41,27 +41,27 @@ object ValidationUtil {
     }
 
     private fun validateUserName(username: String) = when {
-        username.isEmpty() -> "User name cannot be empty"
+        username.isEmpty() -> ErrorCode.EMPTY_FIELD
         else -> null
     }
 
     private fun validateEmail(email: String) = when {
-        email.isEmpty() -> "email field is empty"
-        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "is not a valid email"
+        email.isEmpty() -> ErrorCode.EMPTY_FIELD
+        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> ErrorCode.INVALID_EMAIL
         else -> null
     }
 
     private fun validatePassword(password: String) = when {
-        password.isEmpty() -> "password field is empty"
-        password.length < 5 -> "password has to be at least 5 symbols"
-        !password.contains(Regex("[1-9]")) -> "password should contain numbers"
-        !password.contains(Regex("[A-Z]")) -> "password should contain upper case letters"
+        password.isEmpty() -> ErrorCode.EMPTY_FIELD
+        password.length < 5 -> ErrorCode.PASSWORD_SHORT
+        !password.contains(Regex("[1-9]")) -> ErrorCode.PASSWORD_SHOULD_CONTAIN_NUMBERS
+        !password.contains(Regex("[A-Z]")) -> ErrorCode.PASSWORD_SHOULD_CONTAIN_UPPER_CASE
         else -> null
     }
 
     private fun validatePasswordRepeat(password: String, passwordRepeat: String) = when {
-        password.isEmpty() -> "repeat password field is empty"
-        password != passwordRepeat -> "Password mismatch"
+        password.isEmpty() -> ErrorCode.EMPTY_FIELD
+        password != passwordRepeat -> ErrorCode.PASSWORD_MISMATCH
         else -> null
     }
 }

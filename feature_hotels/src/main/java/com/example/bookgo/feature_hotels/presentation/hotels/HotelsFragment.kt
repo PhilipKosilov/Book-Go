@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.bookgo.core.domain.models.Hotel
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_hotels.R
 import com.example.bookgo.feature_hotels.databinding.FragmentHotelsBinding
@@ -31,17 +32,28 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHotelsBinding.bind(view)
 
+        setupViewModelObservers()
+        fetchHotels()
+    }
+
+    private fun fetchHotels() {
+        viewModel.fetchHotels()
+    }
+
+    private fun setupViewModelObservers() {
         viewModel.hotels.observe(viewLifecycleOwner) {
-            val adapter = HotelsRecyclerAdapter(it)
-            adapter.setOnItemClickListener { hotel ->
-                val direction =
-                    HotelsFragmentDirections.actionHotelsFragmentToHotelDetailsFragment(hotel)
-                findNavController().navigate(direction)
-            }
-            binding.hotelsRecyclerView.adapter = adapter
+            binding.hotelsRecyclerView.adapter = createHotelsRecyclerAdapter(it)
+        }
+    }
+
+    private fun createHotelsRecyclerAdapter(hotels: List<Hotel>) =
+        HotelsRecyclerAdapter(hotels).apply {
+            setOnItemClickListener { gotoDetailsFragment(it) }
         }
 
-        viewModel.fetchHotels()
+    private fun gotoDetailsFragment(hotel: Hotel) {
+        val direction = HotelsFragmentDirections.actionHotelsFragmentToHotelDetailsFragment(hotel)
+        findNavController().navigate(direction)
     }
 
     private fun injectDependencies() {

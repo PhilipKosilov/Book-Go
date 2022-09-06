@@ -6,9 +6,10 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /*
-email must be unique
+    Entity for accounts database.
  */
 
+// Setting unique restriction on email
 @Entity(tableName = "accounts", indices = [Index(value = ["email"], unique = true)])
 data class Account(
     @PrimaryKey(autoGenerate = true) val uid: Long = 0,

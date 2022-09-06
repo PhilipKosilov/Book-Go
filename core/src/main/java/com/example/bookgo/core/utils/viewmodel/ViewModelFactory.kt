@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 
+//TODO: Migrate to Dagger
 class ViewModelFactory<T : ViewModel>(
     private val viewModelCreator: () -> T
 ) : ViewModelProvider.Factory {

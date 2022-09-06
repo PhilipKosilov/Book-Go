@@ -3,6 +3,7 @@ package com.example.bookgo.feature_auth.domain.use_case
 import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.domain.repository.AccountRepository
 import com.example.bookgo.feature_auth.domain.models.SignInResult
+import com.example.bookgo.feature_auth.domain.utils.ErrorCode
 import com.example.bookgo.feature_auth.domain.utils.ValidationUtil
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class SignInUseCase @Inject constructor(
         } else {
             validationResult.copy(
                 success = false,
-                loginError = "invalid email or password"
+                loginError = ErrorCode.INVALID_EMAIL_OR_PASSWORD
             )
         }
     }

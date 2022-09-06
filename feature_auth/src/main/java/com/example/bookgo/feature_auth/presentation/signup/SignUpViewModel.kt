@@ -17,27 +17,26 @@ class SignUpViewModel(
     private val signUp: SignUpUseCase
 ) : ViewModel() {
 
-    private val _showInvalidUserName = MutableLiveData<String?>()
-    val showInvalidUserName: LiveData<String?> = _showInvalidUserName
+    private val _showInvalidUserName = MutableLiveData<Int?>()
+    val showInvalidUserName: LiveData<Int?> = _showInvalidUserName
 
-    private val _showInvalidEmail = MutableLiveData<String?>()
-    val showInvalidEmail: LiveData<String?> = _showInvalidEmail
+    private val _showInvalidEmail = MutableLiveData<Int?>()
+    val showInvalidEmail: LiveData<Int?> = _showInvalidEmail
 
-    private val _showInvalidPassword = MutableLiveData<String?>()
-    val showInvalidPassword: LiveData<String?> = _showInvalidPassword
+    private val _showInvalidPassword = MutableLiveData<Int?>()
+    val showInvalidPassword: LiveData<Int?> = _showInvalidPassword
 
-    private val _showInvalidRepeatPassword = MutableLiveData<String?>()
-    val showInvalidRepeatPassword: LiveData<String?> = _showInvalidRepeatPassword
+    private val _showInvalidRepeatPassword = MutableLiveData<Int?>()
+    val showInvalidRepeatPassword: LiveData<Int?> = _showInvalidRepeatPassword
 
     private val _showSuccessSignUpEvent = MutableUnitLiveEvent()
     val showSuccessSignUpEvent = _showSuccessSignUpEvent.toLiveEvent()
 
-    private val _showErrorToast = MutableLiveEvent<String?>()
+    private val _showErrorToast = MutableLiveEvent<Int?>()
     val showErrorToast = _showErrorToast.toLiveEvent()
 
     private val _goBackEvent = MutableUnitLiveEvent()
     val goBackEvent = _goBackEvent.toLiveEvent()
-
 
     fun signUp(signUpData: SignUpData) = viewModelScope.launch {
         val result = signUp.execute(signUpData)

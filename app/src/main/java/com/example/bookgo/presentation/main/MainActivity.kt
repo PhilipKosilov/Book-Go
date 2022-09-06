@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.bookgo.R
 import com.example.bookgo.app.MyApplication
-import com.example.bookgo.core.utils.livedata.observeEvent
+import com.example.bookgo.core.utils.livedata.requireValue
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.databinding.ActivityMainBinding
 import com.example.bookgo.domain.use_case.CheckLoginUseCase
@@ -37,29 +37,26 @@ class MainActivity : AppCompatActivity() {
         setupSplash()
         setupViewModelObservers()
 
-        // Has to be AFTER setupSplash to inflate BottomNavigationView
-        // with Theme.App.Starting, that is not based on Theme.AppCompat. Otherwise crashes.
+        // Has to come AFTER setupSplash to inflate BottomNavigationView
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 
 
-
     private fun setupViewModelObservers() {
-        viewModel.launchMainScreenEvent.observeEvent(this) {
-            launchMainScreen()
-        }
-        viewModel.launchAuthorizationEvent.observeEvent(this) {
-            launchAuthorization()
+        viewModel.isLoggedIn.observe(this) {
+            if (viewModel.isLoggedIn.requireValue()) {
+                launchMainScreen()
+            } else {
+                launchAuthorization()
+            }
+            setupActionBar()
         }
     }
 
     private fun launchMainScreen() {
-        // works with bottom navigation
         navHostFragment.findNavController()
             .setGraph(R.navigation.tabs_graph)
-
-        setupActionBar() //only after setting graph
         enableBottomNavigation()
     }
 
@@ -71,7 +68,6 @@ class MainActivity : AppCompatActivity() {
     private fun launchAuthorization() {
         navHostFragment.findNavController()
             .setGraph(com.example.bookgo.feature_auth.R.navigation.auth_graph)
-        setupActionBar() //only after setting graph
     }
 
     private fun setupSplash() {

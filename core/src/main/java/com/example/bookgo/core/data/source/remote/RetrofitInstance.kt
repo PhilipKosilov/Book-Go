@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Provides a ready to use retrofit service.
  */
+//TODO: Migrate to Dagger dependency injection
 object RetrofitInstance {
     private const val BASE_URL = "https://sandbox.impala.travel/"
     private const val API_KEY_ATTRIBUTE = "x-api-key"

@@ -19,23 +19,14 @@ class MainViewModel(
     private var _isLoading = MutableLiveData<Boolean>()
     var isLoading: LiveData<Boolean> = _isLoading
 
-    private val _launchMainScreenEvent = MutableUnitLiveEvent()
-    val launchMainScreenEvent = _launchMainScreenEvent.toLiveEvent()
-
-    private val _launchAuthorizationEvent = MutableUnitLiveEvent()
-    val launchAuthorizationEvent = _launchAuthorizationEvent.toLiveEvent()
+    private var _isLoggedIn = MutableLiveData<Boolean>()
+    var isLoggedIn: LiveData<Boolean> = _isLoggedIn
 
     init {
         viewModelScope.launch {
             delay(1000) // let animation play
-            val isSigned = checkLogin.execute()
 
-            if (isSigned) {
-                _launchMainScreenEvent.publishEvent()
-            } else {
-                _launchAuthorizationEvent.publishEvent()
-            }
-
+            _isLoggedIn.postValue(checkLogin.execute())
             _isLoading.postValue(false)
         }
     }

@@ -48,11 +48,9 @@ dependencies {
 
     implementation 'com.google.dagger:dagger:2.43.2'
     kapt 'com.google.dagger:dagger-compiler:2.43.2'
-
     implementation 'com.google.dagger:dagger-android-support:2.43.2'
     kapt 'com.google.dagger:dagger-android-processor:2.43.2'
 
-    // remove when add navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 

@@ -14,7 +14,7 @@ class HotelsRepositoryImpl @Inject constructor(
 
     override suspend fun getHotels(): List<Hotel> {
         val result = source.getHotels()
-        // remove first test hotel because it has no images
+        // Removing sandbox hotels without images (first one)
         return result.data
             .filter { it.images.isNotEmpty() }
             .map { mapper.mapFromEntity(it) }

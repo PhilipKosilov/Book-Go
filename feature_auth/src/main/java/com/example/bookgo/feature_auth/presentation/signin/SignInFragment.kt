@@ -15,8 +15,8 @@ import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
 import com.example.bookgo.feature_auth.di.AuthComponentProvider
 import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
-import dagger.android.AndroidInjection
-import dagger.android.support.AndroidSupportInjection
+import com.example.bookgo.feature_auth.domain.utils.ErrorCode
+import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
 import javax.inject.Inject
 
 
@@ -36,9 +36,17 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
+
+        setupViewModelObservers()
+        setupButtonListeners()
+    }
+
+    private fun setupButtonListeners() {
         binding.signInButton.setOnClickListener { onSignInButtonPressed() }
         binding.signUpButton.setOnClickListener { onSignUpButtonPressed() }
+    }
 
+    private fun setupViewModelObservers() {
         observeInvalidEmailEvent()
         observeInvalidPasswordEvent()
         observeAuthToastEvent()
@@ -59,7 +67,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         binding.passwordEditText.setText(password)
     }
 
-
     private fun onSignInButtonPressed() {
         val signInData = SignInData(
             email = binding.emailEditText.text.toString(),
@@ -70,12 +77,12 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private fun observeInvalidEmailEvent() =
         viewModel.showInvalidEmail.observe(viewLifecycleOwner) {
-            binding.emailTextInput.error = it
+            binding.emailTextInput.error = resolveErrorMessage(it)
         }
 
     private fun observeInvalidPasswordEvent() =
         viewModel.showInvalidPassword.observe(viewLifecycleOwner) {
-            binding.passwordTextInput.error = it
+            binding.passwordTextInput.error = resolveErrorMessage(it)
         }
 
     private fun observeAuthToastEvent() = viewModel.showAuthToast.observeEvent(viewLifecycleOwner) {
@@ -84,12 +91,13 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         binding.passwordEditText.text?.clear()
     }
 
-    private fun observeNavigateToTabsEvent() = viewModel.navigateToTabsEvent.observeEvent(viewLifecycleOwner) {
-        val request = NavDeepLinkRequest.Builder
-            .fromUri(DEEPLINK_TO_MAIN.toUri())
-            .build()
-        findNavController().navigate(request)
-    }
+    private fun observeNavigateToTabsEvent() =
+        viewModel.navigateToTabsEvent.observeEvent(viewLifecycleOwner) {
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(DEEPLINK_TO_MAIN.toUri())
+                .build()
+            findNavController().navigate(request)
+        }
 
     private fun onSignUpButtonPressed() {
         val email = binding.emailEditText.text.toString()

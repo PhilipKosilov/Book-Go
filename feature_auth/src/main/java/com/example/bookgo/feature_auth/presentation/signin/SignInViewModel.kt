@@ -19,23 +19,23 @@ class SignInViewModel(
 ) : ViewModel() {
 
     // todo: add loading animation
+    private val _state = MutableLiveData<State>()
+    val state: LiveData<State> = _state
 
+    private val _showInvalidEmail = MutableLiveData<Int?>()
+    val showInvalidEmail: LiveData<Int?> = _showInvalidEmail
 
-    private val _showInvalidEmail = MutableLiveData<String?>()
-    val showInvalidEmail: LiveData<String?> = _showInvalidEmail
-
-    private val _showInvalidPassword = MutableLiveData<String?>()
-    val showInvalidPassword: LiveData<String?> = _showInvalidPassword
+    private val _showInvalidPassword = MutableLiveData<Int?>()
+    val showInvalidPassword: LiveData<Int?> = _showInvalidPassword
 
     // won't be processed if value is null
-    private val _showAuthErrorToast = MutableLiveEvent<String?>()
+    private val _showAuthErrorToast = MutableLiveEvent<Int?>()
     val showAuthToast = _showAuthErrorToast.toLiveEvent()
 
     //todo: rename to get back to main
     private val _navigateToTabsEvent = MutableUnitLiveEvent()
     val navigateToTabsEvent = _navigateToTabsEvent.toLiveEvent()
 
-    //
     fun signIn(signInData: SignInData) = viewModelScope.launch {
         val result = singIn.execute(signInData)
 
@@ -48,4 +48,11 @@ class SignInViewModel(
         }
     }
 
+    //TODO use state instead
+    data class State(
+        val success: Boolean,
+        val emailError: Int? = null,
+        val passwordError: Int? = null,
+        val loginError: Int? = null
+    )
 }

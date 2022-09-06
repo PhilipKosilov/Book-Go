@@ -6,8 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 /*
-Temporary data source for testing
-// todo: switch to RetrofitInstance when done
+* Temporary data source to use for testing.
  */
 
 object LocalDataSource : HotelsRetrofitApi {
