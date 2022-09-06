@@ -1,5 +1,6 @@
 package com.example.bookgo.feature_auth.presentation.signup
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,15 +12,25 @@ import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignUpBinding
+import com.example.bookgo.feature_auth.di.AuthComponentProvider
 import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
 import com.example.bookgo.feature_auth.presentation.signin.SignInFragment
+import javax.inject.Inject
 
 
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private lateinit var binding: FragmentSignUpBinding
-    private val viewModel by viewModelCreator { SignUpViewModel(SignUpUseCase()) }
     private val args by navArgs<SignUpFragmentArgs>()
+
+    @Inject
+    lateinit var signUpUseCase: SignUpUseCase
+    private val viewModel by viewModelCreator { SignUpViewModel(signUpUseCase) }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        injectDependencies()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,5 +103,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         val previousSavedState = findNavController().previousBackStackEntry?.savedStateHandle
         previousSavedState?.set(SignInFragment.EXTRA_EMAIL, email)
         previousSavedState?.set(SignInFragment.EXTRA_PASSWORD, password)
+    }
+
+    private fun injectDependencies() {
+        (requireActivity().application as AuthComponentProvider)
+            .provideAuthComponent().inject(this)
     }
 }

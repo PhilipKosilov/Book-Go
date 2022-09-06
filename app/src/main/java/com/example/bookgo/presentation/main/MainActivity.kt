@@ -9,14 +9,19 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.bookgo.R
+import com.example.bookgo.app.MyApplication
 import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.databinding.ActivityMainBinding
 import com.example.bookgo.domain.use_case.CheckLoginUseCase
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModelCreator { MainViewModel(CheckLoginUseCase()) }
+
+    @Inject
+    lateinit var checkLoginUseCase: CheckLoginUseCase
+    private val viewModel by viewModelCreator { MainViewModel(checkLoginUseCase) }
 
     private val navHostFragment: NavHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.nav_container) as NavHostFragment
@@ -26,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        injectDependencies()
         super.onCreate(savedInstanceState)
 
         setupSplash()
@@ -36,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
+
 
     private fun setupViewModelObservers() {
         viewModel.launchMainScreenEvent.observeEvent(this) {
@@ -76,6 +84,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupActionBar() {
         NavigationUI.setupActionBarWithNavController(this, navController)
+    }
+
+    // inject dependencies before super.onCreate
+    private fun injectDependencies() {
+        (applicationContext as MyApplication).appComponent.inject(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {

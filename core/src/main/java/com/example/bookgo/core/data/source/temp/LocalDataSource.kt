@@ -1,18 +1,19 @@
 package com.example.bookgo.core.data.source.temp
 
+import com.example.bookgo.core.data.api.HotelsRetrofitApi
 import com.example.bookgo.core.data.models.HotelsModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 /*
-Temporary data source for testing and developing
+Temporary data source for testing
 // todo: switch to RetrofitInstance when done
  */
 
-object LocalDataSource {
+object LocalDataSource : HotelsRetrofitApi {
     private val gson: Gson = GsonBuilder().create()
 
-    fun getHotels(): HotelsModel = gson.fromJson(json, HotelsModel::class.java)
+    override suspend fun getHotels(): HotelsModel = gson.fromJson(json, HotelsModel::class.java)
 
     val json = """
         {

@@ -10,9 +10,10 @@ import com.example.bookgo.core.utils.livedata.toLiveEvent
 import com.example.bookgo.domain.use_case.CheckLoginUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainViewModel(
-    private val checkLogin: CheckLoginUseCase
+    val checkLogin: CheckLoginUseCase
 ) : ViewModel() {
 
     private var _isLoading = MutableLiveData<Boolean>()

@@ -34,7 +34,8 @@ class SignInViewModel(
     //todo: rename to get back to main
     private val _navigateToTabsEvent = MutableUnitLiveEvent()
     val navigateToTabsEvent = _navigateToTabsEvent.toLiveEvent()
-//
+
+    //
     fun signIn(signInData: SignInData) = viewModelScope.launch {
         val result = singIn.execute(signInData)
 

@@ -7,11 +7,12 @@ import com.example.bookgo.core.data.models.entities.SignUpData
 import com.example.bookgo.core.data.source.Prefs
 import com.example.bookgo.core.data.source.database.DBManager
 import com.example.bookgo.core.domain.repository.AccountRepository
+import javax.inject.Inject
 
 
-class AccountRepositoryImpl(
-    private val pref: SharedPreferences = Prefs.pref,
-    private val db: DBManager = DBManager
+class AccountRepositoryImpl @Inject constructor(
+    private val pref: SharedPreferences,
+    private val db: DBManager
 ) : AccountRepository {
 
 
