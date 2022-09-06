@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bookgo.core.domain.models.Hotel
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_hotels.R
@@ -42,8 +44,21 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
 
     private fun setupViewModelObservers() {
         viewModel.hotels.observe(viewLifecycleOwner) {
-            binding.hotelsRecyclerView.adapter = createHotelsRecyclerAdapter(it)
+            setupRecyclerView(it)
         }
+    }
+
+    private fun setupRecyclerView(hotels: List<Hotel>){
+        binding.hotelsRecyclerView.layoutManager = object: LinearLayoutManager(context) {
+            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
+                lp?.height = (height / 1.5).toInt()
+                return true
+            }
+        }
+
+        val adapter = HotelsRecyclerAdapter(hotels)
+        adapter.setOnItemClickListener { gotoDetailsFragment(it) }
+        binding.hotelsRecyclerView.adapter = adapter
     }
 
     private fun createHotelsRecyclerAdapter(hotels: List<Hotel>) =
@@ -60,4 +75,5 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
         (requireActivity().application as HotelsComponentProvider)
             .provideHotelsComponent().inject(this)
     }
+
 }
