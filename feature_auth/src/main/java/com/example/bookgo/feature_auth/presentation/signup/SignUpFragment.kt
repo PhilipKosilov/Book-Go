@@ -52,7 +52,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         observeInvalidPasswordRepeatEvent()
         observeGoBackEvent()
         observeErrorEvent()
-        observeShowSuccessSignUpMessageEvent()
     }
 
     private fun observeErrorEvent() = viewModel.showErrorToast.observeEvent(viewLifecycleOwner) {
@@ -68,11 +67,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         )
         viewModel.signUp(signUpData)
     }
-
-    private fun observeShowSuccessSignUpMessageEvent() =
-        viewModel.showSuccessSignUpEvent.observeEvent(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), R.string.sign_up_success, Toast.LENGTH_LONG).show()
-        }
 
     private fun observeGoBackEvent() = viewModel.goBackEvent.observeEvent(viewLifecycleOwner) {
         setResultForPreviousScreen(

@@ -29,9 +29,6 @@ class SignUpViewModel(
     private val _showInvalidRepeatPassword = MutableLiveData<Int?>()
     val showInvalidRepeatPassword: LiveData<Int?> = _showInvalidRepeatPassword
 
-    private val _showSuccessSignUpEvent = MutableUnitLiveEvent()
-    val showSuccessSignUpEvent = _showSuccessSignUpEvent.toLiveEvent()
-
     private val _showErrorToast = MutableLiveEvent<Int?>()
     val showErrorToast = _showErrorToast.toLiveEvent()
 
@@ -42,7 +39,6 @@ class SignUpViewModel(
         val result = signUp.execute(signUpData)
 
         if (result.success) {
-            _showSuccessSignUpEvent.publishEvent()
             _goBackEvent.publishEvent()
         } else if (result.authError != null) {
             _showErrorToast.publishEvent(result.authError)
