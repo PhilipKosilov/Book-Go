@@ -3,6 +3,7 @@ package com.example.bookgo.core.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.bookgo.core.data.api.HotelsRetrofitApi
+import com.example.bookgo.core.data.models.mapper.AccountMapper
 import com.example.bookgo.core.data.repository.AccountRepositoryImpl
 import com.example.bookgo.core.data.repository.HotelsRepositoryImpl
 import com.example.bookgo.core.data.source.database.AccountDatabase
@@ -26,9 +27,10 @@ class CoreModule(val context: Context) {
     @Provides
     fun provideAccountRepository(
         pref: SharedPreferences,
-        db: DBManager
+        db: DBManager,
+        mapper: AccountMapper
     ): AccountRepository {
-        return AccountRepositoryImpl(pref, db)
+        return AccountRepositoryImpl(pref, db, mapper)
     }
 
     @Singleton

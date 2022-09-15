@@ -1,7 +1,7 @@
 package com.example.bookgo.feature_auth.domain.models
 
 /*
-    For future use. For now use SignInResult and SignUpResult.
+For future use. For now use SignInResult and SignUpResult.
  */
 
 sealed class Response <out T> {

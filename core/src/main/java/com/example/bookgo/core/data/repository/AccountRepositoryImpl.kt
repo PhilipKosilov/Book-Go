@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.example.bookgo.core.data.models.entities.Account
 import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.mapper.AccountMapper
 import com.example.bookgo.core.data.source.database.DBManager
 import com.example.bookgo.core.domain.repository.AccountRepository
 import javax.inject.Inject
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
     private val pref: SharedPreferences,
-    private val db: DBManager
+    private val db: DBManager,
+    private val mapper: AccountMapper
 ) : AccountRepository {
 
     override suspend fun isSignedIn(): Boolean {
@@ -33,12 +35,7 @@ class AccountRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signUp(signUpData: SignUpData) {
-        // todo: convert to Account by mapper
-        val account = Account(
-            username = signUpData.username,
-            email = signUpData.email,
-            password = signUpData.password
-        )
+        val account = mapper.mapFromSignUp(signUpData)
         db.signUp(account)
     }
 

@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
     private val navHostFragment: NavHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.nav_container) as NavHostFragment
     }
+
+    // todo: Temporary solution.
+    // I need to change navController from one in nav_container to
+    // one in tabs_container to process navigateUp properly.
     private var _navController: NavController? = null
     private var navController: NavController
         private set(x) {
@@ -31,8 +35,6 @@ class MainActivity : AppCompatActivity() {
             _navController = it
         }
 
-
-    // fragment listener is sued for tracking current nav controller
     private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
         override fun onFragmentViewCreated(
             fm: FragmentManager,
@@ -41,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             savedInstanceState: Bundle?
         ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
-            Log.i("general", "onFragmentViewCreated: $f")
             if (f is TabsFragment || f is NavHostFragment) return
             onNavControllerActivated(f.findNavController())
         }
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         // Has to come AFTER setupSplash to inflate BottomNavigationView
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        setContentView(R.layout.activity_main)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
         setupActionBar()
@@ -67,11 +67,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        Log.i("general", "onBackPressed: $navHostFragment")
     }
 
     override fun onDestroy() {

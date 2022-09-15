@@ -12,7 +12,6 @@ import com.example.bookgo.domain.use_case.CheckLoginUseCase
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
-
     @Inject
     lateinit var checkLoginUseCase: CheckLoginUseCase
     private val viewModel by viewModelCreator { LoginViewModel(checkLoginUseCase) }

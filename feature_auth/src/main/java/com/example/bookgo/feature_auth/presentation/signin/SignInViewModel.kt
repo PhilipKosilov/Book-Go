@@ -19,6 +19,7 @@ class SignInViewModel(
 ) : ViewModel() {
 
     // todo: add loading animation
+
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
 
@@ -33,8 +34,8 @@ class SignInViewModel(
     val showAuthToast = _showAuthErrorToast.toLiveEvent()
 
     //todo: rename to get back to main
-    private val _navigateToTabsEvent = MutableUnitLiveEvent()
-    val navigateToTabsEvent = _navigateToTabsEvent.toLiveEvent()
+    private val _navigateToMainEvent = MutableUnitLiveEvent()
+    val navigateToMainEvent = _navigateToMainEvent.toLiveEvent()
 
     fun signIn(signInData: SignInData) = viewModelScope.launch {
         val result = singIn.execute(signInData)
@@ -44,7 +45,7 @@ class SignInViewModel(
         _showAuthErrorToast.publishEvent(result.loginError)
 
         if (result.success) {
-            _navigateToTabsEvent.publishEvent()
+            _navigateToMainEvent.publishEvent()
         }
     }
 

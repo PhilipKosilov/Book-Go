@@ -15,7 +15,6 @@ import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
 import com.example.bookgo.feature_auth.di.AuthComponentProvider
 import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
-import com.example.bookgo.feature_auth.domain.utils.ErrorCode
 import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
 import javax.inject.Inject
 
@@ -92,7 +91,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun observeNavigateToTabsEvent() =
-        viewModel.navigateToTabsEvent.observeEvent(viewLifecycleOwner) {
+        viewModel.navigateToMainEvent.observeEvent(viewLifecycleOwner) {
             val request = NavDeepLinkRequest.Builder
                 .fromUri(DEEPLINK_TO_MAIN.toUri())
                 .build()

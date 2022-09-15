@@ -8,7 +8,6 @@ import com.example.bookgo.core.domain.models.Hotel
 import com.example.bookgo.feature_hotels.domain.use_case.GetHotelsUseCase
 import kotlinx.coroutines.launch
 
-// todo remake to use UseCase
 class HotelsViewModel(
     val getHotels: GetHotelsUseCase
 ): ViewModel() {
@@ -18,7 +17,7 @@ class HotelsViewModel(
 
     // todo: add necessary error checks
     fun fetchHotels() = viewModelScope.launch {
-        val hoteldata = getHotels.execute()
-        _hotels.postValue(hoteldata)
+        val hotelData = getHotels.execute()
+        _hotels.postValue(hotelData)
     }
 }

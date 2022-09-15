@@ -1,9 +1,7 @@
 package com.example.bookgo.presentation.tabs
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -14,7 +12,7 @@ import com.example.bookgo.R
 import com.example.bookgo.databinding.FragmentTabsBinding
 
 /*
-Not used at the moment. Will be an entry point for tabs gragp. Will provide bottom navigation.
+Represents main screen with FragmentContainer and BottomNavigation.
  */
 class TabsFragment : Fragment(R.layout.fragment_tabs) {
 
@@ -40,27 +38,8 @@ class TabsFragment : Fragment(R.layout.fragment_tabs) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTabsBinding.bind(view)
 
-        test()
-
         enableBottomNavigation()
         setupActionBar()
-    }
-
-    fun test() {
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    Log.d("general", "Fragment back pressed invoked")
-
-                    // if you want onBackPressed() to be called as normal afterwards
-                    if (isEnabled) {
-                        isEnabled = false
-                        requireActivity().onBackPressed()
-                    }
-                }
-            }
-            )
     }
 
     private fun enableBottomNavigation() {

@@ -3,7 +3,8 @@ package com.example.bookgo.feature_auth.domain.utils
 import androidx.fragment.app.Fragment
 import com.example.bookgo.feature_auth.R
 
-//TODO find a better way to handle exceptions
+// SignIn and SignUp authorization errors are processed in domain layer, but i need to use
+// string resources to display error messages.
 fun Fragment.resolveErrorMessage(errorCode: Int?) = when (errorCode) {
     ErrorCode.EMPTY_FIELD -> getString(R.string.field_is_empty)
     ErrorCode.INVALID_EMAIL -> getString(R.string.email_invalid)

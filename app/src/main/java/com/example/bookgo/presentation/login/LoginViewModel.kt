@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bookgo.core.utils.livedata.MutableUnitLiveEvent
-import com.example.bookgo.core.utils.livedata.publishEvent
-import com.example.bookgo.core.utils.livedata.toLiveEvent
 import com.example.bookgo.domain.use_case.CheckLoginUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
