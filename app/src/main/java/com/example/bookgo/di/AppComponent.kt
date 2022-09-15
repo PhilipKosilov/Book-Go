@@ -1,5 +1,6 @@
 package com.example.bookgo.di
 
+import com.example.bookgo.presentation.login.LoginFragment
 import com.example.bookgo.presentation.main.MainActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -8,4 +9,5 @@ import javax.inject.Singleton
 @Component(modules = [LoginModule::class])
 interface AppComponent {
     fun inject(mainActivity: MainActivity)
+    fun inject(loginFragment: LoginFragment)
 }

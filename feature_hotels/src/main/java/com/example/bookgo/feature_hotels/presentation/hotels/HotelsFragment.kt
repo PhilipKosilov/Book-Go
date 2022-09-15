@@ -61,11 +61,6 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
         binding.hotelsRecyclerView.adapter = adapter
     }
 
-    private fun createHotelsRecyclerAdapter(hotels: List<Hotel>) =
-        HotelsRecyclerAdapter(hotels).apply {
-            setOnItemClickListener { gotoDetailsFragment(it) }
-        }
-
     private fun gotoDetailsFragment(hotel: Hotel) {
         val direction = HotelsFragmentDirections.actionHotelsFragmentToHotelDetailsFragment(hotel)
         findNavController().navigate(direction)
@@ -75,5 +70,4 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
         (requireActivity().application as HotelsComponentProvider)
             .provideHotelsComponent().inject(this)
     }
-
 }

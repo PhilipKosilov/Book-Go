@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LogoutButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="icon">@drawable/logout_icon</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/red</item>
+        <item name="strokeColor">@color/red</item>
+        <item name="android:textSize">@dimen/button_font</item>
+        <item name="textAllCaps">false</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:progressTint">@color/red</item>
+    </style>
+
+</resources>

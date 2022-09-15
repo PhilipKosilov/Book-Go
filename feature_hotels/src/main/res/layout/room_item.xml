@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="hotelRoom"
+            type="com.example.bookgo.core.domain.models.HotelRoom" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/hotel_room_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/small"
+                app:cardCornerRadius="@dimen/cardview_radius_small"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/room_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{hotelRoom.images[0]}"
+                    tools:background="@android:drawable/sym_def_app_icon" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/room_name"
+                style="@style/hotel_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small"
+                android:text="@{hotelRoom.name}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hotel_room_card_view" />
+
+            <TextView
+                android:id="@+id/room_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small"
+                android:text="@{hotelRoom.description}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/room_name" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

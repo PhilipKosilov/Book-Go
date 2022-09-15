@@ -1,85 +1,88 @@
 package com.example.bookgo.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bookgo.R
 import com.example.bookgo.app.MyApplication
-import com.example.bookgo.core.utils.livedata.requireValue
-import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.databinding.ActivityMainBinding
-import com.example.bookgo.domain.use_case.CheckLoginUseCase
-import javax.inject.Inject
+import com.example.bookgo.presentation.tabs.TabsFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    @Inject
-    lateinit var checkLoginUseCase: CheckLoginUseCase
-    private val viewModel by viewModelCreator { MainViewModel(checkLoginUseCase) }
-
     private val navHostFragment: NavHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.nav_container) as NavHostFragment
     }
-    private val navController: NavController by lazy {
-        navHostFragment.navController
+    private var _navController: NavController? = null
+    private var navController: NavController
+        private set(x) {
+            _navController = x
+        }
+        get() = _navController ?: navHostFragment.navController.also {
+            _navController = it
+        }
+
+
+    // fragment listener is sued for tracking current nav controller
+    private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentViewCreated(
+            fm: FragmentManager,
+            f: Fragment,
+            v: View,
+            savedInstanceState: Bundle?
+        ) {
+            super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+            Log.i("general", "onFragmentViewCreated: $f")
+            if (f is TabsFragment || f is NavHostFragment) return
+            onNavControllerActivated(f.findNavController())
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         super.onCreate(savedInstanceState)
 
-        setupSplash()
-        setupViewModelObservers()
-
         // Has to come AFTER setupSplash to inflate BottomNavigationView
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
+//        setContentView(R.layout.activity_main)
 
-
-    private fun setupViewModelObservers() {
-        viewModel.isLoggedIn.observe(this) {
-            if (viewModel.isLoggedIn.requireValue()) {
-                launchMainScreen()
-            } else {
-                launchAuthorization()
-            }
-            setupActionBar()
-        }
-    }
-
-    private fun launchMainScreen() {
-        navHostFragment.findNavController()
-            .setGraph(R.navigation.tabs_graph)
-        enableBottomNavigation()
-    }
-
-    private fun enableBottomNavigation() {
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
-        binding.bottomNavigationView.visibility = View.VISIBLE
-    }
-
-    private fun launchAuthorization() {
-        navHostFragment.findNavController()
-            .setGraph(com.example.bookgo.feature_auth.R.navigation.auth_graph)
-    }
-
-    private fun setupSplash() {
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                viewModel.isLoading.value ?: true
-            }
-        }
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
+        setupActionBar()
     }
 
     private fun setupActionBar() {
-        NavigationUI.setupActionBarWithNavController(this, navController)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                com.example.bookgo.feature_auth.R.id.sign_in_fragment,
+            )
+        )
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.i("general", "onBackPressed: $navHostFragment")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
+        _navController = null
+    }
+
+    private fun onNavControllerActivated(navController: NavController) {
+        if (this.navController == navController) return
+        this.navController = navController
     }
 
     // inject dependencies before super.onCreate

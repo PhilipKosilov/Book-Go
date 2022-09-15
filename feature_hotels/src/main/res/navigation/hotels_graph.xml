@@ -17,6 +17,7 @@
             android:id="@+id/deepLink"
             app:uri="android-app://bookgo.app/hotels" />
     </fragment>
+
     <fragment
         android:id="@+id/hotelDetailsFragment"
         android:name="com.example.bookgo.feature_hotels.presentation.details.HotelDetailsFragment"

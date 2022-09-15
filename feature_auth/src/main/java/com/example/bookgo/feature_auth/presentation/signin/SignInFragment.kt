@@ -115,6 +115,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     companion object {
         const val EXTRA_EMAIL = "EXTRA_EMAIL"
         const val EXTRA_PASSWORD = "EXTRA_PASSWORD"
-        const val DEEPLINK_TO_MAIN = "android-app://bookgo.app/hotels"
+        const val DEEPLINK_TO_MAIN = "android-app://bookgo.app/tabs"
     }
 }

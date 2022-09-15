@@ -7,12 +7,10 @@ import com.bumptech.glide.Glide
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Hotel(
+class HotelRoom(
     val name: String,
-    val starRating: Int,
-    val address: String,
-    val images: List<String>,
-    val rooms: List<HotelRoom>
+    val description: String,
+    val images: List<String>
 ) : Parcelable {
     companion object {
         @JvmStatic
