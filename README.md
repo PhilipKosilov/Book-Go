@@ -1,21 +1,22 @@
-### Book&go
+### Book&Go
 
+Book&Go™ offers easy access to thousands of places to stay. Plan your trip beforehand of find last minute accommodations. From the most luxurious hotels to the coziest coast villas, you can find a place that is perfect for you.
+
+Find, browse, book and go!
 
 **App architecture:**
 
 ***:app***
 
-Shows splash screen using `SplashScreen API`. Checks login data and navigates to either **sign in** or **main** (hotels) screen.
+Shows splash screen using `SplashScreen API`. Checks login status and navigates to either **authorization** or **main** (hotels) screen.
 
 ***:core***
 
-Provides common dependencies: local and remote repositories, database etc.  
+Provides common dependencies: local and remote repositories, database etc.
 
 ***:feature_auth***
 
 Contains **sign in** and **sign up** screens. On successful authorization goes to the **main** screen.
-
-*Currently **crashes** after successful authorization because navigation is set up incorrectly.*
 
 ***:feature_hotels***
 
@@ -34,15 +35,15 @@ Contains a screen with app's settings (in development).
 ### Pet project requirements:
 - [ ] At least 2 Activities
 - [ ] Foreground Service
-- [x] Graph with Fragments (Jetpack navigation). Master-details pattern  
+- [x] Graph with Fragments (Jetpack navigation). Master-details pattern
 - [ ] List of items at least with two types
-- [ ] Custom view (optional)  
+- [ ] Custom view (optional)
 - [x] Drawer or Bottom Navigation
 - [ ] Night Themes
 - [x] Animations
 - [ ] Schedule task with WorkManager
 - [x] Persistence: user preference in Shared Preferences and cached data in Room
-- [x] At least one network call REST  
+- [x] At least one network call REST
 - [ ] One screen with MVP. RxJava
 - [x] One screen with MVVM. Coroutines, Flow, LiveData
 - [x] Dagger 2 for (DI)
