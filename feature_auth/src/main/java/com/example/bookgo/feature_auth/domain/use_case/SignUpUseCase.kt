@@ -5,7 +5,6 @@ import com.example.bookgo.core.data.models.errors.EmailTakenError
 import com.example.bookgo.core.data.models.exceptions.EmailTakenException
 import com.example.bookgo.core.domain.repository.AccountRepository
 import com.example.bookgo.feature_auth.domain.models.SignUpResult
-import com.example.bookgo.feature_auth.domain.utils.ErrorCode
 import com.example.bookgo.feature_auth.domain.utils.ValidationUtil
 import javax.inject.Inject
 

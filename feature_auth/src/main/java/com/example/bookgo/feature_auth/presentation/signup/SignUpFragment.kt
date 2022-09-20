@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_auth.R
@@ -42,20 +43,54 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             binding.emailEditText.setText(getEmailArgument())
         }
 
-        setupViewModelObservers()
+        observeViewModelState()
+        observeToastEvent()
     }
 
-    private fun setupViewModelObservers() {
-        observeInvalidUsernameEvent()
-        observeInvalidEmailEvent()
-        observeInvalidPasswordEvent()
-        observeInvalidPasswordRepeatEvent()
-        observeGoBackEvent()
-        observeErrorEvent()
+    private fun observeViewModelState() {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            if (state.success) {
+                returnToSignIn()
+            }
+            state.usernameError?.let {
+                processUsernameError(it)
+            }
+            state.emailError?.let {
+                processEmailError(it)
+            }
+            state.passwordError?.let {
+                processPasswordError(it)
+            }
+            state.passwordRepeatError?.let {
+                processPasswordRepeatError(it)
+            }
+        }
     }
 
-    private fun observeErrorEvent() = viewModel.showErrorToast.observeEvent(viewLifecycleOwner) {
-        Toast.makeText(requireContext(), resolveErrorMessage(it), Toast.LENGTH_LONG).show()
+    private fun processUsernameError(error: FormValidationError) {
+        binding.usernameTextInput.error = resolveErrorMessage(error)
+    }
+
+    private fun processEmailError(error: FormValidationError) {
+        binding.emailTextInput.error = resolveErrorMessage(error)
+    }
+
+    private fun processPasswordError(error: FormValidationError) {
+        binding.passwordTextInput.error = resolveErrorMessage(error)
+    }
+
+    private fun processPasswordRepeatError(error: FormValidationError) {
+        binding.repeatPasswordTextInput.error = resolveErrorMessage(error)
+    }
+
+    private fun observeToastEvent() {
+        viewModel.showErrorToast.observeEvent(viewLifecycleOwner) { error ->
+            displayToast(resolveErrorMessage(error))
+        }
+    }
+
+    private fun displayToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun onCreateAccountButtonPressed() {
@@ -68,33 +103,13 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         viewModel.signUp(signUpData)
     }
 
-    private fun observeGoBackEvent() = viewModel.goBackEvent.observeEvent(viewLifecycleOwner) {
+    private fun returnToSignIn() {
         setResultForPreviousScreen(
             email = binding.emailEditText.text.toString(),
             password = binding.passwordEditText.text.toString()
         )
         findNavController().popBackStack()
     }
-
-    private fun observeInvalidUsernameEvent() =
-        viewModel.showInvalidUserName.observe(viewLifecycleOwner) {
-            binding.usernameTextInput.error = resolveErrorMessage(it)
-        }
-
-    private fun observeInvalidEmailEvent() =
-        viewModel.showInvalidEmail.observe(viewLifecycleOwner) {
-            binding.emailTextInput.error = resolveErrorMessage(it)
-        }
-
-    private fun observeInvalidPasswordEvent() =
-        viewModel.showInvalidPassword.observe(viewLifecycleOwner) {
-            binding.passwordTextInput.error = resolveErrorMessage(it)
-        }
-
-    private fun observeInvalidPasswordRepeatEvent() =
-        viewModel.showInvalidRepeatPassword.observe(viewLifecycleOwner) {
-            binding.repeatPasswordTextInput.error = resolveErrorMessage(it)
-        }
 
     private fun getEmailArgument(): String? = args.email
 

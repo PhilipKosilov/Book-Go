@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import com.example.bookgo.core.data.models.entities.SignInData
-import com.example.bookgo.core.utils.livedata.observeEvent
+import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
@@ -36,8 +36,13 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
 
-        setupViewModelObservers()
+        observeViewModelState()
         setupButtonListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getResultFromSignUp()
     }
 
     private fun setupButtonListeners() {
@@ -45,16 +50,34 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         binding.signUpButton.setOnClickListener { onSignUpButtonPressed() }
     }
 
-    private fun setupViewModelObservers() {
-        observeInvalidEmailEvent()
-        observeInvalidPasswordEvent()
-        observeAuthToastEvent()
-        observeNavigateToTabsEvent()
+    private fun observeViewModelState() {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            if (state.success) {
+                navigateToTabs()
+            }
+            state.emailError?.let {
+                processInvalidEmail(it)
+            }
+            state.passwordError?.let {
+                processInvalidPassword(it)
+            }
+            state.loginError?.let {
+                processInvalidLogin(it)
+            }
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        getResultFromSignUp()
+    private fun processInvalidEmail(error: FormValidationError) {
+        binding.emailTextInput.error = resolveErrorMessage(error)
+    }
+
+    private fun processInvalidPassword(error: FormValidationError) {
+        binding.passwordTextInput.error = resolveErrorMessage(error)
+    }
+
+    private fun processInvalidLogin(error: FormValidationError) {
+        displayToast(resolveErrorMessage(error))
+        binding.passwordEditText.text?.clear()
     }
 
     private fun getResultFromSignUp() {
@@ -74,29 +97,16 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         viewModel.signIn(signInData)
     }
 
-    private fun observeInvalidEmailEvent() =
-        viewModel.showInvalidEmail.observe(viewLifecycleOwner) {
-            binding.emailTextInput.error = resolveErrorMessage(it)
-        }
-
-    private fun observeInvalidPasswordEvent() =
-        viewModel.showInvalidPassword.observe(viewLifecycleOwner) {
-            binding.passwordTextInput.error = resolveErrorMessage(it)
-        }
-
-    private fun observeAuthToastEvent() = viewModel.showAuthToast.observeEvent(viewLifecycleOwner) {
-        Toast.makeText(requireContext(), R.string.invalid_email_or_password, Toast.LENGTH_SHORT)
-            .show()
-        binding.passwordEditText.text?.clear()
+    private fun displayToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun observeNavigateToTabsEvent() =
-        viewModel.navigateToMainEvent.observeEvent(viewLifecycleOwner) {
-            val request = NavDeepLinkRequest.Builder
-                .fromUri(DEEPLINK_TO_MAIN.toUri())
-                .build()
-            findNavController().navigate(request)
-        }
+    private fun navigateToTabs() {
+        val request = NavDeepLinkRequest.Builder
+            .fromUri(DEEPLINK_TO_MAIN.toUri())
+            .build()
+        findNavController().navigate(request)
+    }
 
     private fun onSignUpButtonPressed() {
         val email = binding.emailEditText.text.toString()

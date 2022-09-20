@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.data.models.entities.SignUpData
 import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.livedata.MutableLiveEvent
-import com.example.bookgo.core.utils.livedata.MutableUnitLiveEvent
 import com.example.bookgo.core.utils.livedata.publishEvent
 import com.example.bookgo.core.utils.livedata.toLiveEvent
+import com.example.bookgo.feature_auth.domain.models.SignUpResult
 import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
 import kotlinx.coroutines.launch
 
@@ -18,36 +18,34 @@ class SignUpViewModel(
     private val signUp: SignUpUseCase
 ) : ViewModel() {
 
-    private val _showInvalidUserName = MutableLiveData<FormValidationError?>()
-    val showInvalidUserName: LiveData<FormValidationError?> = _showInvalidUserName
-
-    private val _showInvalidEmail = MutableLiveData<FormValidationError?>()
-    val showInvalidEmail: LiveData<FormValidationError?> = _showInvalidEmail
-
-    private val _showInvalidPassword = MutableLiveData<FormValidationError?>()
-    val showInvalidPassword: LiveData<FormValidationError?> = _showInvalidPassword
-
-    private val _showInvalidRepeatPassword = MutableLiveData<FormValidationError?>()
-    val showInvalidRepeatPassword: LiveData<FormValidationError?> = _showInvalidRepeatPassword
+    private val _state = MutableLiveData<State>()
+    val state: LiveData<State> = _state
 
     private val _showErrorToast = MutableLiveEvent<FormValidationError?>()
     val showErrorToast = _showErrorToast.toLiveEvent()
 
-    private val _goBackEvent = MutableUnitLiveEvent()
-    val goBackEvent = _goBackEvent.toLiveEvent()
-
     fun signUp(signUpData: SignUpData) = viewModelScope.launch {
         val result = signUp.execute(signUpData)
+        _state.postValue(resultToState(result))
 
-        if (result.success) {
-            _goBackEvent.publishEvent()
-        } else if (result.authError != null) {
+        if (result.authError != null) {
             _showErrorToast.publishEvent(result.authError)
-        } else {
-            _showInvalidUserName.postValue(result.usernameError)
-            _showInvalidEmail.postValue(result.emailError)
-            _showInvalidPassword.postValue(result.passwordError)
-            _showInvalidRepeatPassword.postValue(result.passwordRepeatError)
         }
     }
+
+    private fun resultToState(signUpResult: SignUpResult) = State(
+        success = signUpResult.success,
+        usernameError = signUpResult.usernameError,
+        emailError = signUpResult.emailError,
+        passwordError = signUpResult.passwordError,
+        passwordRepeatError = signUpResult.passwordRepeatError
+    )
+
+    data class State(
+        val success: Boolean,
+        val usernameError: FormValidationError? = null,
+        val emailError: FormValidationError? = null,
+        val passwordError: FormValidationError? = null,
+        val passwordRepeatError: FormValidationError? = null,
+    )
 }
