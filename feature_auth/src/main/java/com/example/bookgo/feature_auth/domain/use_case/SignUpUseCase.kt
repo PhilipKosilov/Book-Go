@@ -1,6 +1,7 @@
 package com.example.bookgo.feature_auth.domain.use_case
 
 import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.errors.EmailTakenError
 import com.example.bookgo.core.data.models.exceptions.EmailTakenException
 import com.example.bookgo.core.domain.repository.AccountRepository
 import com.example.bookgo.feature_auth.domain.models.SignUpResult
@@ -25,7 +26,7 @@ class SignUpUseCase @Inject constructor(
         } catch (e: EmailTakenException) {
             validationResult.copy(
                 success = false,
-                authError = ErrorCode.ACCOUNT_ALREADY_EXISTS
+                authError = EmailTakenError
             )
         }
     }

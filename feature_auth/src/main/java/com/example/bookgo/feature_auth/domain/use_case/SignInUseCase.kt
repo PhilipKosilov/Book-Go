@@ -1,6 +1,8 @@
 package com.example.bookgo.feature_auth.domain.use_case
 
 import com.example.bookgo.core.data.models.entities.SignInData
+import com.example.bookgo.core.data.models.errors.FormValidationError
+import com.example.bookgo.core.data.models.errors.InvalidLoginError
 import com.example.bookgo.core.domain.repository.AccountRepository
 import com.example.bookgo.feature_auth.domain.models.SignInResult
 import com.example.bookgo.feature_auth.domain.utils.ErrorCode
@@ -23,7 +25,7 @@ class SignInUseCase @Inject constructor(
         } else {
             validationResult.copy(
                 success = false,
-                loginError = ErrorCode.INVALID_EMAIL_OR_PASSWORD
+                loginError = InvalidLoginError
             )
         }
     }

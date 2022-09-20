@@ -3,6 +3,7 @@ package com.example.bookgo.feature_auth.domain.utils
 import android.util.Patterns
 import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.errors.*
 import com.example.bookgo.feature_auth.domain.models.SignInResult
 import com.example.bookgo.feature_auth.domain.models.SignUpResult
 
@@ -41,27 +42,27 @@ object ValidationUtil {
     }
 
     private fun validateUserName(username: String) = when {
-        username.isEmpty() -> ErrorCode.EMPTY_FIELD
+        username.isEmpty() -> EmptyFieldError
         else -> null
     }
 
     private fun validateEmail(email: String) = when {
-        email.isEmpty() -> ErrorCode.EMPTY_FIELD
-        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> ErrorCode.INVALID_EMAIL
+        email.isEmpty() -> EmptyFieldError
+        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> InvalidEmailError
         else -> null
     }
 
     private fun validatePassword(password: String) = when {
-        password.isEmpty() -> ErrorCode.EMPTY_FIELD
-        password.length < 5 -> ErrorCode.PASSWORD_SHORT
-        !password.contains(Regex("[1-9]")) -> ErrorCode.PASSWORD_SHOULD_CONTAIN_NUMBERS
-        !password.contains(Regex("[A-Z]")) -> ErrorCode.PASSWORD_SHOULD_CONTAIN_UPPER_CASE
+        password.isEmpty() -> EmptyFieldError
+        password.length < 5 -> PasswordShortError
+        !password.contains(Regex("[1-9]")) -> PasswordNoNumbersError
+        !password.contains(Regex("[A-Z]")) -> PasswordNoUppercaseError
         else -> null
     }
 
     private fun validatePasswordRepeat(password: String, passwordRepeat: String) = when {
-        password.isEmpty() -> ErrorCode.EMPTY_FIELD
-        password != passwordRepeat -> ErrorCode.PASSWORD_MISMATCH
+        password.isEmpty() -> EmptyFieldError
+        password != passwordRepeat -> PasswordMismatchError
         else -> null
     }
 }

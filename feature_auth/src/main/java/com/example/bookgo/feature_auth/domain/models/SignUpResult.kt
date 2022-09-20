@@ -1,10 +1,12 @@
 package com.example.bookgo.feature_auth.domain.models
 
+import com.example.bookgo.core.data.models.errors.FormValidationError
+
 data class SignUpResult(
     val success: Boolean,
-    val usernameError: Int? = null,
-    val emailError: Int? = null,
-    val passwordError: Int? = null,
-    val passwordRepeatError: Int? = null,
-    val authError: Int? = null
+    val usernameError: FormValidationError? = null,
+    val emailError: FormValidationError? = null,
+    val passwordError: FormValidationError? = null,
+    val passwordRepeatError: FormValidationError? = null,
+    val authError: FormValidationError? = null
 )

@@ -1,16 +1,20 @@
 package com.example.bookgo.feature_auth.domain.utils
 
 import androidx.fragment.app.Fragment
+import com.example.bookgo.core.data.models.errors.*
 import com.example.bookgo.feature_auth.R
 
 // SignIn and SignUp authorization errors are processed in domain layer, but i need to use
 // string resources to display error messages.
-fun Fragment.resolveErrorMessage(errorCode: Int?) = when (errorCode) {
-    ErrorCode.EMPTY_FIELD -> getString(R.string.field_is_empty)
-    ErrorCode.INVALID_EMAIL -> getString(R.string.email_invalid)
-    ErrorCode.PASSWORD_SHORT -> getString(R.string.password_too_short)
-    ErrorCode.PASSWORD_SHOULD_CONTAIN_NUMBERS -> getString(R.string.password_should_contain_numbers)
-    ErrorCode.PASSWORD_SHOULD_CONTAIN_UPPER_CASE -> getString(R.string.password_should_contain_upper_case)
-    ErrorCode.INVALID_EMAIL_OR_PASSWORD -> getString(R.string.invalid_email_or_password)
-    else -> ""
+// todo: rewrite to be exhaustive
+fun Fragment.resolveErrorMessage(error: FormValidationError?) = when (error) {
+    EmptyFieldError -> getString(R.string.field_is_empty)
+    InvalidEmailError -> getString(R.string.email_invalid)
+    PasswordShortError -> getString(R.string.password_too_short)
+    PasswordNoNumbersError -> getString(R.string.password_should_contain_numbers)
+    PasswordNoUppercaseError -> getString(R.string.password_should_contain_upper_case)
+    PasswordMismatchError -> getString(R.string.password_mismatch)
+    InvalidLoginError -> getString(R.string.invalid_email_or_password)
+    EmailTakenError -> getString(R.string.account_already_exists)
+    null -> ""
 }

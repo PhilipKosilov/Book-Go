@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.data.models.entities.SignInData
+import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.livedata.MutableLiveEvent
 import com.example.bookgo.core.utils.livedata.MutableUnitLiveEvent
 import com.example.bookgo.core.utils.livedata.publishEvent
@@ -23,14 +24,14 @@ class SignInViewModel(
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
 
-    private val _showInvalidEmail = MutableLiveData<Int?>()
-    val showInvalidEmail: LiveData<Int?> = _showInvalidEmail
+    private val _showInvalidEmail = MutableLiveData<FormValidationError?>()
+    val showInvalidEmail: LiveData<FormValidationError?> = _showInvalidEmail
 
-    private val _showInvalidPassword = MutableLiveData<Int?>()
-    val showInvalidPassword: LiveData<Int?> = _showInvalidPassword
+    private val _showInvalidPassword = MutableLiveData<FormValidationError?>()
+    val showInvalidPassword: LiveData<FormValidationError?> = _showInvalidPassword
 
     // won't be processed if value is null
-    private val _showAuthErrorToast = MutableLiveEvent<Int?>()
+    private val _showAuthErrorToast = MutableLiveEvent<FormValidationError?>()
     val showAuthToast = _showAuthErrorToast.toLiveEvent()
 
     //todo: rename to get back to main

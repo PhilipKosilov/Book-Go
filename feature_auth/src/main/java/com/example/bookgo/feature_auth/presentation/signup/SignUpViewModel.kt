@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.livedata.MutableLiveEvent
 import com.example.bookgo.core.utils.livedata.MutableUnitLiveEvent
 import com.example.bookgo.core.utils.livedata.publishEvent
@@ -17,19 +18,19 @@ class SignUpViewModel(
     private val signUp: SignUpUseCase
 ) : ViewModel() {
 
-    private val _showInvalidUserName = MutableLiveData<Int?>()
-    val showInvalidUserName: LiveData<Int?> = _showInvalidUserName
+    private val _showInvalidUserName = MutableLiveData<FormValidationError?>()
+    val showInvalidUserName: LiveData<FormValidationError?> = _showInvalidUserName
 
-    private val _showInvalidEmail = MutableLiveData<Int?>()
-    val showInvalidEmail: LiveData<Int?> = _showInvalidEmail
+    private val _showInvalidEmail = MutableLiveData<FormValidationError?>()
+    val showInvalidEmail: LiveData<FormValidationError?> = _showInvalidEmail
 
-    private val _showInvalidPassword = MutableLiveData<Int?>()
-    val showInvalidPassword: LiveData<Int?> = _showInvalidPassword
+    private val _showInvalidPassword = MutableLiveData<FormValidationError?>()
+    val showInvalidPassword: LiveData<FormValidationError?> = _showInvalidPassword
 
-    private val _showInvalidRepeatPassword = MutableLiveData<Int?>()
-    val showInvalidRepeatPassword: LiveData<Int?> = _showInvalidRepeatPassword
+    private val _showInvalidRepeatPassword = MutableLiveData<FormValidationError?>()
+    val showInvalidRepeatPassword: LiveData<FormValidationError?> = _showInvalidRepeatPassword
 
-    private val _showErrorToast = MutableLiveEvent<Int?>()
+    private val _showErrorToast = MutableLiveEvent<FormValidationError?>()
     val showErrorToast = _showErrorToast.toLiveEvent()
 
     private val _goBackEvent = MutableUnitLiveEvent()
