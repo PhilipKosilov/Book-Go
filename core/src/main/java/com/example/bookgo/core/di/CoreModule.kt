@@ -14,14 +14,14 @@ import com.example.bookgo.core.domain.repository.AccountRepository
 import com.example.bookgo.core.domain.repository.HotelsRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-class CoreModule(val context: Context) {
-
-    @Singleton
-    @Provides
-    fun provideContext(): Context = context
+@InstallIn(SingletonComponent::class)
+class CoreModule {
 
     @Singleton
     @Provides
@@ -41,13 +41,17 @@ class CoreModule(val context: Context) {
 
     @Singleton
     @Provides
-    fun provideAccountDataBase(context: Context): AccountDatabase {
+    fun provideAccountDataBase(
+        @ApplicationContext context: Context
+    ): AccountDatabase {
         return AccountDatabase.getInstance(context)
     }
 
     @Singleton
     @Provides
-    fun providePrefs(context: Context): SharedPreferences {
+    fun providePrefs(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
         return context.getSharedPreferences(
             context.getString(context.applicationInfo.labelRes),
             Context.MODE_PRIVATE

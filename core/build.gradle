@@ -3,10 +3,11 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     def apikeyPropertiesFile = rootProject.file("core/keystore/apikey.properties")
     def apikeyProperties = new Properties()
@@ -14,7 +15,7 @@ android {
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -56,8 +57,9 @@ dependencies {
     implementation "com.google.code.gson:gson:$retrofitVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

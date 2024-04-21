@@ -1,6 +1,5 @@
 package com.example.bookgo.feature_hotels.presentation.hotels
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,12 +10,12 @@ import com.example.bookgo.core.domain.models.Hotel
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_hotels.R
 import com.example.bookgo.feature_hotels.databinding.FragmentHotelsBinding
-import com.example.bookgo.feature_hotels.di.HotelsComponentProvider
 import com.example.bookgo.feature_hotels.domain.use_case.GetHotelsUseCase
 import com.example.bookgo.feature_hotels.presentation.adapter.HotelsRecyclerAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class HotelsFragment : Fragment(R.layout.fragment_hotels) {
 
     lateinit var binding: FragmentHotelsBinding
@@ -24,11 +23,6 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
     @Inject
     lateinit var getHotelsUseCase: GetHotelsUseCase
     private val viewModel by viewModelCreator { HotelsViewModel(getHotelsUseCase) }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        injectDependencies()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,10 +58,5 @@ class HotelsFragment : Fragment(R.layout.fragment_hotels) {
     private fun gotoDetailsFragment(hotel: Hotel) {
         val direction = HotelsFragmentDirections.actionHotelsFragmentToHotelDetailsFragment(hotel)
         findNavController().navigate(direction)
-    }
-
-    private fun injectDependencies() {
-        (requireActivity().application as HotelsComponentProvider)
-            .provideHotelsComponent().inject(this)
     }
 }

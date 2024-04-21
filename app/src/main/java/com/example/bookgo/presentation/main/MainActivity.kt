@@ -1,7 +1,6 @@
 package com.example.bookgo.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,10 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bookgo.R
-import com.example.bookgo.app.MyApplication
 import com.example.bookgo.databinding.ActivityMainBinding
 import com.example.bookgo.presentation.tabs.TabsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
 
         // Has to come AFTER setupSplash to inflate BottomNavigationView
@@ -78,11 +77,6 @@ class MainActivity : AppCompatActivity() {
     private fun onNavControllerActivated(navController: NavController) {
         if (this.navController == navController) return
         this.navController = navController
-    }
-
-    // inject dependencies before super.onCreate
-    private fun injectDependencies() {
-        (applicationContext as MyApplication).appComponent.inject(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,7 +1,6 @@
 package com.example.bookgo.feature_hotels.presentation.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -12,7 +11,7 @@ import com.example.bookgo.feature_hotels.presentation.adapter.HotelRoomRecyclerA
 
 
 class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) {
-    lateinit var binding: FragmentHotelDetailsBinding
+    private lateinit var binding: FragmentHotelDetailsBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

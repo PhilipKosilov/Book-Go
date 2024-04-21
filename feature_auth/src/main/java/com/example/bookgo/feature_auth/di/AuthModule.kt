@@ -6,8 +6,11 @@ import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
 import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module(includes = [CoreModule::class])
+@InstallIn(SingletonComponent::class)
 object AuthModule {
 
     @Provides

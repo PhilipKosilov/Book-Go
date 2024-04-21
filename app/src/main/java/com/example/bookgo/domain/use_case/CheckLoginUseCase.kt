@@ -4,7 +4,7 @@ import com.example.bookgo.core.domain.repository.AccountRepository
 import javax.inject.Inject
 
 class CheckLoginUseCase @Inject constructor(
-    val accountsRepository: AccountRepository
+    private val accountsRepository: AccountRepository
 ) {
     suspend fun execute(): Boolean {
         return accountsRepository.isSignedIn()

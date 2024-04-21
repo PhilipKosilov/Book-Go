@@ -10,10 +10,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bookgo.R
 import com.example.bookgo.databinding.FragmentTabsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /*
 Represents main screen with FragmentContainer and BottomNavigation.
  */
+@AndroidEntryPoint
 class TabsFragment : Fragment(R.layout.fragment_tabs) {
 
     private lateinit var binding: FragmentTabsBinding

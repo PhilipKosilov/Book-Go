@@ -1,6 +1,5 @@
 package com.example.bookgo.feature_auth.presentation.signin
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,12 +12,12 @@ import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
-import com.example.bookgo.feature_auth.di.AuthComponentProvider
 import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
 import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private lateinit var binding: FragmentSignInBinding
@@ -26,11 +25,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     @Inject
     lateinit var signInUseCase: SignInUseCase
     private val viewModel by viewModelCreator { SignInViewModel(signInUseCase) }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        injectDependencies()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -114,11 +108,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
         val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment(emailArg)
         findNavController().navigate(direction)
-    }
-
-    private fun injectDependencies() {
-        (requireActivity().application as AuthComponentProvider)
-            .provideAuthComponent().inject(this)
     }
 
     companion object {
