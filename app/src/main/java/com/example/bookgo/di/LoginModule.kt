@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object LoginModule {
     @Provides
-    fun provideLoginUseCase(
+    fun provideCheckLoginUseCase(
         accountsRepository: AccountRepository
     ): CheckLoginUseCase {
         return CheckLoginUseCase(accountsRepository)

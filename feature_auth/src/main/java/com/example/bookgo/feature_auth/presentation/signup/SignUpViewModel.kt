@@ -11,11 +11,13 @@ import com.example.bookgo.core.utils.livedata.publishEvent
 import com.example.bookgo.core.utils.livedata.toLiveEvent
 import com.example.bookgo.feature_auth.domain.models.SignUpResult
 import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class SignUpViewModel(
-    private val signUp: SignUpUseCase
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State>()
@@ -25,7 +27,7 @@ class SignUpViewModel(
     val showErrorToast = _showErrorToast.toLiveEvent()
 
     fun signUp(signUpData: SignUpData) = viewModelScope.launch {
-        val result = signUp.execute(signUpData)
+        val result = signUpUseCase.execute(signUpData)
         _state.postValue(resultToState(result))
 
         if (result.authError != null) {
