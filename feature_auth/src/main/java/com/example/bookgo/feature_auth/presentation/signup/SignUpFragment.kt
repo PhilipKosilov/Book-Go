@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bookgo.core.data.models.entities.SignUpData
 import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.livedata.observeEvent
-import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignUpBinding
-import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
 import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
 import com.example.bookgo.feature_auth.presentation.signin.SignInFragment
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
@@ -24,9 +22,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private lateinit var binding: FragmentSignUpBinding
     private val args by navArgs<SignUpFragmentArgs>()
 
-    @Inject
-    lateinit var signUpUseCase: SignUpUseCase
-    private val viewModel by viewModelCreator { SignUpViewModel(signUpUseCase) }
+    private val viewModel: SignUpViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -5,26 +5,22 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.data.models.errors.FormValidationError
-import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
-import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
 import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private lateinit var binding: FragmentSignInBinding
 
-    @Inject
-    lateinit var signInUseCase: SignInUseCase
-    private val viewModel by viewModelCreator { SignInViewModel(signInUseCase) }
+    private val viewModel: SignInViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

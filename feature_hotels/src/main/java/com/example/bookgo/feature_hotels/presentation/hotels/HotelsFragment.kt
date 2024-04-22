@@ -3,26 +3,22 @@ package com.example.bookgo.feature_hotels.presentation.hotels
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookgo.core.domain.models.Hotel
-import com.example.bookgo.core.utils.viewmodel.viewModelCreator
 import com.example.bookgo.feature_hotels.R
 import com.example.bookgo.feature_hotels.databinding.FragmentHotelsBinding
-import com.example.bookgo.feature_hotels.domain.use_case.GetHotelsUseCase
 import com.example.bookgo.feature_hotels.presentation.adapter.HotelsRecyclerAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HotelsFragment : Fragment(R.layout.fragment_hotels) {
 
-    lateinit var binding: FragmentHotelsBinding
+    private lateinit var binding: FragmentHotelsBinding
+    private val viewModel: HotelsViewModel by viewModels()
 
-    @Inject
-    lateinit var getHotelsUseCase: GetHotelsUseCase
-    private val viewModel by viewModelCreator { HotelsViewModel(getHotelsUseCase) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -3,18 +3,14 @@ package com.example.bookgo.presentation.login
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.bookgo.core.utils.livedata.requireValue
-import com.example.bookgo.core.utils.viewmodel.viewModelCreator
-import com.example.bookgo.domain.use_case.CheckLoginUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-    @Inject
-    lateinit var checkLoginUseCase: CheckLoginUseCase
-    private val viewModel by viewModelCreator { LoginViewModel(checkLoginUseCase) }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

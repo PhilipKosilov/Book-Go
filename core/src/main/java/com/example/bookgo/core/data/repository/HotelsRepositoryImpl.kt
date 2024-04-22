@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 
 class HotelsRepositoryImpl @Inject constructor(
-    val source: HotelsRetrofitApi,
-    val mapper: HotelModelMapper
+    private val source: HotelsRetrofitApi,
+    private val mapper: HotelModelMapper
 ) : HotelsRepository {
 
     override suspend fun getHotels(): List<Hotel> {

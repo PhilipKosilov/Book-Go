@@ -6,18 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.data.models.errors.FormValidationError
-import com.example.bookgo.core.utils.livedata.MutableLiveEvent
-import com.example.bookgo.core.utils.livedata.MutableUnitLiveEvent
-import com.example.bookgo.core.utils.livedata.publishEvent
-import com.example.bookgo.core.utils.livedata.toLiveEvent
 import com.example.bookgo.feature_auth.domain.models.SignInResult
 import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class SignInViewModel(
-    private val singIn: SignInUseCase
+@HiltViewModel
+class SignInViewModel @Inject constructor(
+    private val singInUseCase: SignInUseCase
 ) : ViewModel() {
 
     // todo: add loading animation
@@ -26,7 +24,7 @@ class SignInViewModel(
     val state: LiveData<State> = _state
 
     fun signIn(signInData: SignInData) = viewModelScope.launch {
-        val result = singIn.execute(signInData)
+        val result = singInUseCase.execute(signInData)
         _state.postValue(resultToState(result))
     }
 
