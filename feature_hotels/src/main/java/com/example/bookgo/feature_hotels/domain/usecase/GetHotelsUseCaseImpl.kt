@@ -1,14 +1,14 @@
-package com.example.bookgo.feature_hotels.domain.use_case
+package com.example.bookgo.feature_hotels.domain.usecase
 
 import com.example.bookgo.core.domain.models.Hotel
 import com.example.bookgo.core.domain.repository.HotelsRepository
 import javax.inject.Inject
 
 
-class GetHotelsUseCase @Inject constructor(
+class GetHotelsUseCaseImpl @Inject constructor(
     private val repository: HotelsRepository
-) {
-    suspend fun execute(): List<Hotel> {
+) : GetHotelsUseCase {
+    override suspend operator fun invoke(): List<Hotel> {
         return repository.getHotels()
     }
 }

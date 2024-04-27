@@ -1,20 +1,16 @@
 package com.example.bookgo.di
 
 import com.example.bookgo.core.di.CoreModule
-import com.example.bookgo.core.domain.repository.AccountRepository
-import com.example.bookgo.domain.use_case.CheckLoginUseCase
+import com.example.bookgo.domain.usecase.CheckLoginUseCase
+import com.example.bookgo.domain.usecase.CheckLoginUseCaseImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 @Module(includes = [CoreModule::class])
 @InstallIn(SingletonComponent::class)
-object LoginModule {
-    @Provides
-    fun provideCheckLoginUseCase(
-        accountsRepository: AccountRepository
-    ): CheckLoginUseCase {
-        return CheckLoginUseCase(accountsRepository)
-    }
+abstract class LoginModule {
+    @Binds
+    abstract fun bindCheckLoginUseCase(checkLoginUseCase: CheckLoginUseCaseImpl): CheckLoginUseCase
 }

@@ -1,29 +1,21 @@
 package com.example.bookgo.feature_auth.di
 
 import com.example.bookgo.core.di.CoreModule
-import com.example.bookgo.core.domain.repository.AccountRepository
-import com.example.bookgo.feature_auth.domain.use_case.SignInUseCase
-import com.example.bookgo.feature_auth.domain.use_case.SignUpUseCase
+import com.example.bookgo.feature_auth.domain.usecase.SignInUseCase
+import com.example.bookgo.feature_auth.domain.usecase.SignInUseCaseImpl
+import com.example.bookgo.feature_auth.domain.usecase.SignUpUseCase
+import com.example.bookgo.feature_auth.domain.usecase.SignUpUseCaseImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 @Module(includes = [CoreModule::class])
 @InstallIn(SingletonComponent::class)
-object AuthModule {
+abstract class AuthModule {
+    @Binds
+    abstract fun bindSignInUseCase(signInUseCase: SignInUseCaseImpl): SignInUseCase
 
-    @Provides
-    fun provideSignInUseCase(
-        accountsRepository: AccountRepository
-    ): SignInUseCase {
-        return SignInUseCase(accountsRepository)
-    }
-
-    @Provides
-    fun provideSignUpUseCase(
-        accountsRepository: AccountRepository
-    ): SignUpUseCase {
-        return SignUpUseCase(accountsRepository)
-    }
+    @Binds
+    abstract fun bindSignUpUseCase(signUpUseCase: SignUpUseCaseImpl): SignUpUseCase
 }

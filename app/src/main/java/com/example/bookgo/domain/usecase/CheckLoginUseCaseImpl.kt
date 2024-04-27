@@ -1,12 +1,12 @@
-package com.example.bookgo.domain.use_case
+package com.example.bookgo.domain.usecase
 
 import com.example.bookgo.core.domain.repository.AccountRepository
 import javax.inject.Inject
 
-class CheckLoginUseCase @Inject constructor(
+class CheckLoginUseCaseImpl @Inject constructor(
     private val accountsRepository: AccountRepository
-) {
-    suspend fun execute(): Boolean {
+) : CheckLoginUseCase {
+    override suspend operator fun invoke(): Boolean {
         return accountsRepository.isSignedIn()
     }
 }

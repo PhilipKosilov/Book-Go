@@ -1,4 +1,4 @@
-package com.example.bookgo.feature_auth.domain.use_case
+package com.example.bookgo.feature_auth.domain.usecase
 
 import com.example.bookgo.core.data.models.entities.SignUpData
 import com.example.bookgo.core.data.models.errors.EmailTakenError
@@ -9,10 +9,10 @@ import com.example.bookgo.feature_auth.domain.utils.ValidationUtil
 import javax.inject.Inject
 
 
-class SignUpUseCase @Inject constructor(
-    val accountsRepository: AccountRepository
-) {
-    suspend fun execute(signUpData: SignUpData): SignUpResult {
+class SignUpUseCaseImpl @Inject constructor(
+    private val accountsRepository: AccountRepository
+): SignUpUseCase {
+    override suspend operator fun invoke(signUpData: SignUpData): SignUpResult {
         val validationResult = ValidationUtil.validateSignUp(signUpData)
 
         if (!validationResult.success) {
