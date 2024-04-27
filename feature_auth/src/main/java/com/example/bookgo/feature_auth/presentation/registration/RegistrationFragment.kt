@@ -7,12 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.bookgo.core.data.models.entities.SignUpData
-import com.example.bookgo.core.data.models.errors.FormValidationError
+import com.example.bookgo.core.data.models.entities.RegistrationData
 import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentRegistrationBinding
-import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
 import com.example.bookgo.feature_auth.presentation.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +25,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRegistrationBinding.bind(view)
-        binding.createAccountButton.setOnClickListener { onCreateAccountButtonPressed() }
+        binding.createAccountButton.setOnClickListener { onRegisterButtonPressed() }
 
         if (savedInstanceState == null && getEmailArgument() != null) {
             binding.emailEditText.setText(getEmailArgument())
@@ -40,64 +38,54 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     private fun observeViewModelState() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             if (state.success) {
-                returnToSignIn()
+                returnToLogin()
             }
 
-            state.usernameError?.let {
-                processUsernameError(it)
-            }
-            state.emailError?.let {
-                processEmailError(it)
-            }
-            state.passwordError?.let {
-                processPasswordError(it)
-            }
-            state.passwordRepeatError?.let {
-                processPasswordRepeatError(it)
-            }
+            processUsernameError(state.usernameErrorMessageId)
+            processEmailError(state.emailErrorMessageId)
+            processPasswordError(state.passwordErrorMessageId)
+            processConfirmPasswordError(state.confirmPasswordErrorMessageId)
         }
     }
 
-    private fun processUsernameError(error: FormValidationError) {
-        binding.usernameTextInput.error = resolveErrorMessage(error)
+    private fun processUsernameError(errorMessageId: Int?) {
+        binding.usernameTextInput.error = errorMessageId?.let { getString(it) }
     }
 
-    private fun processEmailError(error: FormValidationError) {
-        binding.emailTextInput.error = resolveErrorMessage(error)
+    private fun processEmailError(errorMessageId: Int?) {
+        binding.emailTextInput.error = errorMessageId?.let { getString(it) }
     }
 
-    private fun processPasswordError(error: FormValidationError) {
-        binding.passwordTextInput.error = resolveErrorMessage(error)
+    private fun processPasswordError(errorMessageId: Int?) {
+        binding.passwordTextInput.error = errorMessageId?.let { getString(it) }
     }
 
-    private fun processPasswordRepeatError(error: FormValidationError) {
-        binding.repeatPasswordTextInput.error = resolveErrorMessage(error)
+    private fun processConfirmPasswordError(errorMessageId: Int?) {
+        binding.repeatPasswordTextInput.error = errorMessageId?.let { getString(it) }
     }
 
     private fun observeToastEvent() {
-        viewModel.showErrorToast.observeEvent(viewLifecycleOwner) { error ->
-            displayToast(resolveErrorMessage(error))
+        viewModel.showErrorToast.observeEvent(viewLifecycleOwner) { toastEvent ->
+            toastEvent?.let {
+                Toast.makeText(requireContext(), toastEvent.messageResId, toastEvent.duration).show()
+            }
         }
     }
 
-    private fun displayToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onCreateAccountButtonPressed() {
-        val signUpData = SignUpData(
+    private fun onRegisterButtonPressed() {
+        val signUpData = RegistrationData(
             email = binding.emailEditText.text.toString(),
             username = binding.usernameEditText.text.toString(),
             password = binding.passwordEditText.text.toString(),
-            passwordRepeat = binding.repeatPasswordEditText.text.toString(),
+            confirmPassword = binding.repeatPasswordEditText.text.toString(),
         )
-        viewModel.signUp(signUpData)
+        viewModel.register(signUpData)
     }
 
-    private fun returnToSignIn() {
+    private fun returnToLogin() {
         setResultForPreviousScreen(
             email = binding.emailEditText.text.toString(),
-            password = binding.passwordEditText.text.toString()
+            password = binding.passwordEditText.text.toString(),
         )
         findNavController().popBackStack()
     }

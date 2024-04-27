@@ -2,7 +2,7 @@ package com.example.bookgo.core.data.repository
 
 import android.content.SharedPreferences
 import com.example.bookgo.core.data.models.entities.LoginData
-import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.entities.RegistrationData
 import com.example.bookgo.core.data.models.mapper.AccountMapper
 import com.example.bookgo.core.data.source.database.DBManager
 import com.example.bookgo.core.domain.repository.AccountRepository
@@ -33,7 +33,7 @@ class AccountRepositoryImpl @Inject constructor(
         return true
     }
 
-    override suspend fun signUp(signUpData: SignUpData) {
+    override suspend fun signUp(signUpData: RegistrationData) {
         val account = mapper.mapFromSignUp(signUpData)
         db.signUp(account)
     }

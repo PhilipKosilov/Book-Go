@@ -1,53 +1,102 @@
 package com.example.bookgo.feature_auth.presentation.registration
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bookgo.core.data.models.entities.SignUpData
-import com.example.bookgo.core.data.models.errors.FormValidationError
+import com.example.bookgo.core.data.models.entities.RegistrationData
+import com.example.bookgo.core.domain.firebase.mapper.FirebaseStateMapper
+import com.example.bookgo.core.domain.firebase.state.RegistrationState
+import com.example.bookgo.core.domain.models.ToastEvent
+import com.example.bookgo.core.domain.validation.mapper.ValidationMapper
+import com.example.bookgo.core.domain.validation.usecase.email.ValidateEmailUseCase
+import com.example.bookgo.core.domain.validation.usecase.name.ValidateNameUseCase
+import com.example.bookgo.core.domain.validation.usecase.password.ValidateConfirmPasswordUseCase
+import com.example.bookgo.core.domain.validation.usecase.password.ValidatePasswordUseCase
 import com.example.bookgo.core.utils.livedata.MutableLiveEvent
 import com.example.bookgo.core.utils.livedata.publishEvent
 import com.example.bookgo.core.utils.livedata.toLiveEvent
-import com.example.bookgo.feature_auth.domain.models.SignUpResult
-import com.example.bookgo.feature_auth.domain.usecase.SignUpUseCaseImpl
+import com.example.bookgo.feature_auth.domain.usecase.RegistrationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCaseImpl
+    private val registrationUseCase: RegistrationUseCase,
+    private val validateNameUseCase: ValidateNameUseCase,
+    private val validateEmailUseCase: ValidateEmailUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
+    private val validationMapper: ValidationMapper,
+    private val firebaseStateMapper: FirebaseStateMapper,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<State>()
+    private var stateValue = State()
+    private val _state = MutableLiveData(stateValue)
     val state: LiveData<State> = _state
 
-    private val _showErrorToast = MutableLiveEvent<FormValidationError?>()
+    private val _showErrorToast = MutableLiveEvent<ToastEvent?>()
     val showErrorToast = _showErrorToast.toLiveEvent()
 
-    fun signUp(signUpData: SignUpData) = viewModelScope.launch {
-        val result = signUpUseCase(signUpData)
-        _state.postValue(resultToState(result))
+    fun register(data: RegistrationData) {
+        viewModelScope.launch {
+            if (validateRegistrationFields(data)) {
+                when (val registrationResult = registrationUseCase(data)) {
+                    is RegistrationState.Success -> {
+                        updateState(stateValue.copy(success = true))
+                    }
 
-        if (result.authError != null) {
-            _showErrorToast.publishEvent(result.authError)
+                    is RegistrationState.UserAlreadyExists,
+                    is RegistrationState.NetworkFailure,
+                    is RegistrationState.UnknownFailure -> {
+                        showToast(firebaseStateMapper.toMessageId(registrationResult))
+                    }
+                }
+            }
         }
     }
 
-    private fun resultToState(signUpResult: SignUpResult) = State(
-        success = signUpResult.success,
-        usernameError = signUpResult.usernameError,
-        emailError = signUpResult.emailError,
-        passwordError = signUpResult.passwordError,
-        passwordRepeatError = signUpResult.passwordRepeatError
-    )
+    private fun validateRegistrationFields(data: RegistrationData): Boolean {
+        val usernameResult = validateNameUseCase(data.username)
+        val usernameValidation = validationMapper.toValidationState(usernameResult)
+
+        val emailResult = validateEmailUseCase(data.email)
+        val emailValidation = validationMapper.toValidationState(emailResult)
+
+        val passwordResult = validatePasswordUseCase(data.password)
+        val passwordValidation = validationMapper.toValidationState(passwordResult)
+
+        val confirmPasswordResult = validateConfirmPasswordUseCase(data.password, data.confirmPassword)
+        val confirmPasswordValidation = validationMapper.toValidationState(confirmPasswordResult)
+
+        val newState = stateValue.copy(
+            usernameErrorMessageId = usernameValidation.errorMessageId,
+            emailErrorMessageId = emailValidation.errorMessageId,
+            passwordErrorMessageId = passwordValidation.errorMessageId,
+            confirmPasswordErrorMessageId = confirmPasswordValidation.errorMessageId,
+        )
+        updateState(newState)
+
+        return !usernameValidation.isError && !emailValidation.isError
+                && !passwordValidation.isError && !confirmPasswordValidation.isError
+    }
+
+    private fun showToast(@StringRes messageId: Int) {
+        _showErrorToast.publishEvent(ToastEvent(messageResId = messageId))
+    }
+
+    private fun updateState(state: State) {
+        stateValue = state
+        _state.postValue(stateValue)
+    }
 
     data class State(
-        val success: Boolean,
-        val usernameError: FormValidationError? = null,
-        val emailError: FormValidationError? = null,
-        val passwordError: FormValidationError? = null,
-        val passwordRepeatError: FormValidationError? = null,
+        val success: Boolean = false,
+        @StringRes val usernameErrorMessageId: Int? = null,
+        @StringRes val emailErrorMessageId: Int? = null,
+        @StringRes val passwordErrorMessageId: Int? = null,
+        @StringRes val confirmPasswordErrorMessageId: Int? = null,
     )
 }

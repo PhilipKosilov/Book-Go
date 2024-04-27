@@ -1,15 +1,23 @@
 <resources>
+    <!--  Login  -->
     <string name="sign_in">Sign in</string>
-    <string name="sign_up">Sign up</string>
     <string name="sign_in_paragraph">Sign in to continue</string>
+    <string name="screen_sign_in">Sign In</string>
+
+    <!--  Registration  -->
+    <string name="sign_up">Sign up</string>
+    <string name="screen_sign_up">Create Account</string>
+    <string name="create_account">Create Account</string>
+    <string name="registration_success">User successfully registered</string>
+    <string name="user_with_this_email_already_exists">User with this email already exists</string>
+
+    <!--  Validation  -->
+    <string name="field_is_empty">Field is empty</string>
     <string name="field_username">Username</string>
     <string name="field_email">Email</string>
     <string name="field_password">Password</string>
     <string name="field_confirm_password">Confirm Password</string>
-    <string name="screen_sign_in">Sign In</string>
-    <string name="screen_sign_up">Create Account</string>
-    <string name="create_account">Create Account</string>
-    <string name="field_is_empty">Field is empty</string>
+
     <string name="invalid_name">Name has to be 1 – 50 characters long</string>
     <string name="invalid_email">Please enter your email in the valid format (e.g. mail@example.com)</string>
     <string name="invalid_password_length">Password must be 6 – 16 characters long</string>
@@ -21,6 +29,4 @@
     <string name="no_internet_connection">Check your internet connection and try again</string>
     <string name="unknown_error_has_occurred">An unknown error has occurred</string>
 
-    <!-- todo Check if can delete this -->
-    <string name="invalid_email_or_password">Invalid email or password</string>
 </resources>

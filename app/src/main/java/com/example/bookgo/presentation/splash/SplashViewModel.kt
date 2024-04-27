@@ -1,4 +1,4 @@
-package com.example.bookgo.presentation.login
+package com.example.bookgo.presentation.splash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SplashViewModel @Inject constructor(
     private val checkLoginUseCase: CheckLoginUseCase
 ) : ViewModel() {
 

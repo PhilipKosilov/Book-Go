@@ -1,4 +1,4 @@
-package com.example.bookgo.presentation.login
+package com.example.bookgo.presentation.splash
 
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -9,8 +9,8 @@ import com.example.bookgo.core.utils.livedata.requireValue
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
-    private val viewModel: LoginViewModel by viewModels()
+class SplashFragment : Fragment() {
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +38,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun launchMainScreen() {
-        val direction = LoginFragmentDirections.actionLoginFragmentToTabsFragment()
+        val direction = SplashFragmentDirections.actionLoginFragmentToTabsFragment()
         findNavController().navigate(direction)
     }
 
     private fun launchAuthorization() {
-        val direction = LoginFragmentDirections.actionLoginFragmentToAuthGraph()
+        val direction = SplashFragmentDirections.actionLoginFragmentToAuthGraph()
         findNavController().navigate(direction)
     }
 }

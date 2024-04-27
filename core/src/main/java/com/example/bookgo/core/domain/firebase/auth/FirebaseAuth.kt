@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -71,4 +72,8 @@ class FirebaseAuth @Inject constructor() : FirebaseAuthApi {
                 .addOnCompleteListener(callback)
         }
     }
+
+    override fun isUserLoggedIn(): Boolean = currentUser() != null
+
+    override fun currentUser(): FirebaseUser? = firebaseAuth.currentUser
 }

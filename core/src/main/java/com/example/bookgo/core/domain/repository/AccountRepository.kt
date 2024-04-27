@@ -1,7 +1,7 @@
 package com.example.bookgo.core.domain.repository
 
 import com.example.bookgo.core.data.models.entities.LoginData
-import com.example.bookgo.core.data.models.entities.SignUpData
+import com.example.bookgo.core.data.models.entities.RegistrationData
 
 /**
  * Repository with account-related actions, e.g. sign-in, sign-up etc.
@@ -21,7 +21,7 @@ interface AccountRepository {
     /**
      * Create a new account.
      */
-    suspend fun signUp(signUpData: SignUpData)
+    suspend fun signUp(signUpData: RegistrationData)
 
     /**
      * Sign-out from the app.

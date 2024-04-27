@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.bookgo.presentation.login.LoginFragment"
+        android:name="com.example.bookgo.presentation.splash.SplashFragment"
         android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_auth_graph"

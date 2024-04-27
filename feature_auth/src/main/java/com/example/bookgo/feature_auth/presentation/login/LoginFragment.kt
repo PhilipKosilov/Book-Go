@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import com.example.bookgo.core.data.models.entities.LoginData
+import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +26,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding = FragmentLoginBinding.bind(view)
 
         observeViewModelState()
+        observeErrorToastEvent()
         setupButtonListeners()
     }
 
@@ -46,23 +48,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             processInvalidEmail(state.emailErrorMessageId)
             processInvalidPassword(state.passwordErrorMessageId)
-            processInvalidLogin(state.loginErrorMessageId)
         }
     }
 
-    private fun processInvalidEmail(errorMessageId: Int?) { //todo provide way to remove errors
+    private fun processInvalidEmail(errorMessageId: Int?) {
         binding.emailTextInput.error = errorMessageId?.let { getString(it) }
     }
 
     private fun processInvalidPassword(errorMessageId: Int?) {
         binding.passwordTextInput.error = errorMessageId?.let { getString(it) }
-    }
-
-    private fun processInvalidLogin(errorMessageId: Int?) {
-        errorMessageId?.let {
-            displayToast(getString(errorMessageId))
-            binding.passwordEditText.text?.clear()
-        }
     }
 
     private fun getResultFromSignUp() {
@@ -83,15 +77,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         )
     }
 
-    private fun displayToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun navigateToTabs() {
         val request = NavDeepLinkRequest.Builder
             .fromUri(DEEPLINK_TO_MAIN.toUri())
             .build()
         findNavController().navigate(request)
+    }
+
+    private fun observeErrorToastEvent() {
+        viewModel.showErrorToast.observeEvent(viewLifecycleOwner) { toastEvent ->
+            toastEvent?.let {
+                Toast.makeText(requireContext(), toastEvent.messageResId, toastEvent.duration)
+                    .show()
+                binding.passwordEditText.text?.clear()
+            }
+        }
     }
 
     private fun onSignUpButtonPressed() {
