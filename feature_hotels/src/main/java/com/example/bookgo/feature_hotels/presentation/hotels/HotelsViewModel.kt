@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.domain.models.Hotel
-import com.example.bookgo.feature_hotels.domain.use_case.GetHotelsUseCase
+import com.example.bookgo.feature_hotels.domain.usecase.GetHotelsUseCaseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HotelsViewModel @Inject constructor(
-    private val getHotelsUseCase: GetHotelsUseCase
+    private val getHotelsUseCase: GetHotelsUseCaseImpl
 ): ViewModel() {
 
     private val _hotels = MutableLiveData<List<Hotel>>()
@@ -20,7 +20,7 @@ class HotelsViewModel @Inject constructor(
 
     // todo: add necessary error checks
     fun fetchHotels() = viewModelScope.launch {
-        val hotelData = getHotelsUseCase.execute()
+        val hotelData = getHotelsUseCase()
         _hotels.postValue(hotelData)
     }
 }

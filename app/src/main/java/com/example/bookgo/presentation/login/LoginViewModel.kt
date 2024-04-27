@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bookgo.domain.use_case.CheckLoginUseCase
+import com.example.bookgo.domain.usecase.CheckLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             delay(1000) // let animation play
 
-            _isLoggedIn.postValue(checkLoginUseCase.execute())
+            _isLoggedIn.postValue(checkLoginUseCase())
             _isLoading.postValue(false)
         }
     }
