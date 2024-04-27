@@ -1,4 +1,4 @@
-package com.example.bookgo.feature_auth.presentation.signup
+package com.example.bookgo.feature_auth.presentation.registration
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
+class RegistrationViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCaseImpl
 ) : ViewModel() {
 

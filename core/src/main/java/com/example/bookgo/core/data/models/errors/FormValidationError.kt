@@ -1,5 +1,6 @@
 package com.example.bookgo.core.data.models.errors
 
+//todo check what this is
 sealed class FormValidationError
 object EmptyFieldError : FormValidationError()
 object InvalidEmailError : FormValidationError()

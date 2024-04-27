@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "809294397269",
+    "project_id": "bookgo-bcba3",
+    "storage_bucket": "bookgo-bcba3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809294397269:android:4154b74bc112c3a3c939dc",
+        "android_client_info": {
+          "package_name": "com.example.bookgo.core"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJZfPcrwqlvKoSaaPUXKO-v9H5N79XlzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

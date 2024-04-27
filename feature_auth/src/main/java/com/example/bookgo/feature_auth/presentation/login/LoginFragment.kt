@@ -1,4 +1,4 @@
-package com.example.bookgo.feature_auth.presentation.signin
+package com.example.bookgo.feature_auth.presentation.login
 
 import android.os.Bundle
 import android.view.View
@@ -8,23 +8,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
-import com.example.bookgo.core.data.models.entities.SignInData
-import com.example.bookgo.core.data.models.errors.FormValidationError
+import com.example.bookgo.core.data.models.entities.LoginData
 import com.example.bookgo.feature_auth.R
-import com.example.bookgo.feature_auth.databinding.FragmentSignInBinding
-import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
+import com.example.bookgo.feature_auth.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment : Fragment(R.layout.fragment_sign_in) {
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private lateinit var binding: FragmentSignInBinding
+    private lateinit var binding: FragmentLoginBinding
 
-    private val viewModel: SignInViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSignInBinding.bind(view)
+        binding = FragmentLoginBinding.bind(view)
 
         observeViewModelState()
         setupButtonListeners()
@@ -45,29 +43,26 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             if (state.success) {
                 navigateToTabs()
             }
-            state.emailError?.let {
-                processInvalidEmail(it)
-            }
-            state.passwordError?.let {
-                processInvalidPassword(it)
-            }
-            state.loginError?.let {
-                processInvalidLogin(it)
-            }
+
+            processInvalidEmail(state.emailErrorMessageId)
+            processInvalidPassword(state.passwordErrorMessageId)
+            processInvalidLogin(state.loginErrorMessageId)
         }
     }
 
-    private fun processInvalidEmail(error: FormValidationError) {
-        binding.emailTextInput.error = resolveErrorMessage(error)
+    private fun processInvalidEmail(errorMessageId: Int?) { //todo provide way to remove errors
+        binding.emailTextInput.error = errorMessageId?.let { getString(it) }
     }
 
-    private fun processInvalidPassword(error: FormValidationError) {
-        binding.passwordTextInput.error = resolveErrorMessage(error)
+    private fun processInvalidPassword(errorMessageId: Int?) {
+        binding.passwordTextInput.error = errorMessageId?.let { getString(it) }
     }
 
-    private fun processInvalidLogin(error: FormValidationError) {
-        displayToast(resolveErrorMessage(error))
-        binding.passwordEditText.text?.clear()
+    private fun processInvalidLogin(errorMessageId: Int?) {
+        errorMessageId?.let {
+            displayToast(getString(errorMessageId))
+            binding.passwordEditText.text?.clear()
+        }
     }
 
     private fun getResultFromSignUp() {
@@ -80,11 +75,12 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun onSignInButtonPressed() {
-        val signInData = SignInData(
-            email = binding.emailEditText.text.toString(),
-            password = binding.passwordEditText.text.toString(),
+        viewModel.login(
+            data = LoginData(
+                email = binding.emailEditText.text.toString(),
+                password = binding.passwordEditText.text.toString(),
+            )
         )
-        viewModel.signIn(signInData)
     }
 
     private fun displayToast(message: String) {
@@ -102,7 +98,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         val email = binding.emailEditText.text.toString()
         val emailArg = email.ifBlank { null }
 
-        val direction = SignInFragmentDirections.actionSignInFragmentToSignUpFragment(emailArg)
+        val direction = LoginFragmentDirections.actionSignInFragmentToSignUpFragment(emailArg)
         findNavController().navigate(direction)
     }
 

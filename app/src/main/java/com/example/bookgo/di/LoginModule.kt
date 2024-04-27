@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class LoginModule {
     @Binds
-    abstract fun bindCheckLoginUseCase(checkLoginUseCase: CheckLoginUseCaseImpl): CheckLoginUseCase
+    abstract fun bindCheckLoginUseCase(checkLoginUseCaseImpl: CheckLoginUseCaseImpl): CheckLoginUseCase
 }

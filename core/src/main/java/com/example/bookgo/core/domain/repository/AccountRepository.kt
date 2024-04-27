@@ -1,6 +1,6 @@
 package com.example.bookgo.core.domain.repository
 
-import com.example.bookgo.core.data.models.entities.SignInData
+import com.example.bookgo.core.data.models.entities.LoginData
 import com.example.bookgo.core.data.models.entities.SignUpData
 
 /**
@@ -16,7 +16,7 @@ interface AccountRepository {
     /**
      * Try to sign-in with the email and password.
      */
-    suspend fun signIn(signInData: SignInData): Boolean
+    suspend fun signIn(signInData: LoginData): Boolean
 
     /**
      * Create a new account.

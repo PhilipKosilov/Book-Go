@@ -1,13 +1,16 @@
 package com.example.bookgo.feature_auth.domain.utils
 
 import android.util.Patterns
-import com.example.bookgo.core.data.models.entities.SignInData
 import com.example.bookgo.core.data.models.entities.SignUpData
-import com.example.bookgo.core.data.models.errors.*
-import com.example.bookgo.feature_auth.domain.models.SignInResult
+import com.example.bookgo.core.data.models.errors.EmptyFieldError
+import com.example.bookgo.core.data.models.errors.InvalidEmailError
+import com.example.bookgo.core.data.models.errors.PasswordMismatchError
+import com.example.bookgo.core.data.models.errors.PasswordNoNumbersError
+import com.example.bookgo.core.data.models.errors.PasswordNoUppercaseError
+import com.example.bookgo.core.data.models.errors.PasswordShortError
 import com.example.bookgo.feature_auth.domain.models.SignUpResult
 
-object ValidationUtil {
+object ValidationUtil { //todo remove and migrate to new Validators.
 
     fun validateSignUp(signUpData: SignUpData): SignUpResult {
         val usernameError = validateUserName(signUpData.username)
@@ -28,18 +31,18 @@ object ValidationUtil {
         )
     }
 
-    fun validateSignIn(signInData: SignInData): SignInResult {
-        val emailError = validateEmail(signInData.email)
-        val passwordError = validatePassword(signInData.password)
-
-        val status = emailError == null && passwordError == null
-
-        return SignInResult(
-            status,
-            emailError,
-            passwordError
-        )
-    }
+//    fun validateSignIn(signInData: LoginData): SignInResult {
+//        val emailError = validateEmail(signInData.email)
+//        val passwordError = validatePassword(signInData.password)
+//
+//        val status = emailError == null && passwordError == null
+//
+//        return SignInResult(
+//            status,
+//            emailError,
+//            passwordError
+//        )
+//    }
 
     private fun validateUserName(username: String) = when {
         username.isEmpty() -> EmptyFieldError

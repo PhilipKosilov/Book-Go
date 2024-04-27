@@ -1,8 +1,7 @@
 package com.example.bookgo.core.data.repository
 
 import android.content.SharedPreferences
-import com.example.bookgo.core.data.models.entities.Account
-import com.example.bookgo.core.data.models.entities.SignInData
+import com.example.bookgo.core.data.models.entities.LoginData
 import com.example.bookgo.core.data.models.entities.SignUpData
 import com.example.bookgo.core.data.models.mapper.AccountMapper
 import com.example.bookgo.core.data.source.database.DBManager
@@ -23,7 +22,7 @@ class AccountRepositoryImpl @Inject constructor(
         return isRegisteredAccount(email, password)
     }
 
-    override suspend fun signIn(signInData: SignInData): Boolean {
+    override suspend fun signIn(signInData: LoginData): Boolean {
         val (email, password) = signInData
         if (!isRegisteredAccount(email, password)) return false
 

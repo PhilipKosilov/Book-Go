@@ -1,4 +1,4 @@
-package com.example.bookgo.feature_auth.presentation.signup
+package com.example.bookgo.feature_auth.presentation.registration
 
 import android.os.Bundle
 import android.view.View
@@ -11,22 +11,22 @@ import com.example.bookgo.core.data.models.entities.SignUpData
 import com.example.bookgo.core.data.models.errors.FormValidationError
 import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.feature_auth.R
-import com.example.bookgo.feature_auth.databinding.FragmentSignUpBinding
+import com.example.bookgo.feature_auth.databinding.FragmentRegistrationBinding
 import com.example.bookgo.feature_auth.domain.utils.resolveErrorMessage
-import com.example.bookgo.feature_auth.presentation.signin.SignInFragment
+import com.example.bookgo.feature_auth.presentation.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
+class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
-    private lateinit var binding: FragmentSignUpBinding
-    private val args by navArgs<SignUpFragmentArgs>()
+    private lateinit var binding: FragmentRegistrationBinding
+    private val args by navArgs<RegistrationFragmentArgs>()
 
-    private val viewModel: SignUpViewModel by viewModels()
+    private val viewModel: RegistrationViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSignUpBinding.bind(view)
+        binding = FragmentRegistrationBinding.bind(view)
         binding.createAccountButton.setOnClickListener { onCreateAccountButtonPressed() }
 
         if (savedInstanceState == null && getEmailArgument() != null) {
@@ -42,6 +42,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             if (state.success) {
                 returnToSignIn()
             }
+
             state.usernameError?.let {
                 processUsernameError(it)
             }
@@ -105,7 +106,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun setResultForPreviousScreen(email: String, password: String) {
         val previousSavedState = findNavController().previousBackStackEntry?.savedStateHandle
-        previousSavedState?.set(SignInFragment.EXTRA_EMAIL, email)
-        previousSavedState?.set(SignInFragment.EXTRA_PASSWORD, password)
+        previousSavedState?.set(LoginFragment.EXTRA_EMAIL, email)
+        previousSavedState?.set(LoginFragment.EXTRA_PASSWORD, password)
     }
 }
