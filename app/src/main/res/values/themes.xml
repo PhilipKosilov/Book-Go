@@ -13,6 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="textInputStyle">@style/GlobalTextInputStyle</item>
-        <item name="materialButtonStyle">@style/GlobalButtonStyle</item>
+        <item name="colorButtonNormal">@color/main_theme_color</item>
+        <item name="android:textAppearanceButton">@style/GlobalButtonStyle</item>
     </style>
 </resources>

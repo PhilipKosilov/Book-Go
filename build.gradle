@@ -5,6 +5,7 @@ buildscript {
     }
 
     ext {
+        googleServicesVersion = '4.3.15'
         navigationVersion = '2.5.2'
         roomVersion = '2.6.1'
         retrofitVersion = '2.9.0'
@@ -17,11 +18,17 @@ buildscript {
         compatVersion = '1.5.1'
         coreKtxVersion = '1.9.0'
         fragmentKtxVersion = '1.5.2'
+        firebaseCoreVersion = '21.1.1'
+        firebaseBomVersion = '32.0.0'
+        firebaseDatabaseVersion = '20.2.1'
+        firebaseStorageVersion = '20.2.0'
+        firebaseAuthVersion = '22.0.0'
     }
 
     dependencies {
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion")
         classpath("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
+        classpath("com.google.gms:google-services:$googleServicesVersion")
     }
 }
 

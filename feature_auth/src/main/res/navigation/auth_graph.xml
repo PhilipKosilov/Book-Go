@@ -7,19 +7,22 @@
 
     <fragment
         android:id="@+id/sign_in_fragment"
-        android:name="com.example.bookgo.feature_auth.presentation.signin.SignInFragment"
+        android:name="com.example.bookgo.feature_auth.presentation.login.LoginFragment"
         android:label="@string/screen_sign_in"
-        tools:layout="@layout/fragment_sign_in">
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/sign_up_fragment" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="android-app://bookgo.app/sign_in" />
     </fragment>
 
     <fragment
         android:id="@+id/sign_up_fragment"
-        android:name="com.example.bookgo.feature_auth.presentation.signup.SignUpFragment"
+        android:name="com.example.bookgo.feature_auth.presentation.registration.RegistrationFragment"
         android:label="@string/screen_sign_up"
-        tools:layout="@layout/fragment_sign_up">
+        tools:layout="@layout/fragment_registration">
         <argument
             android:name="email"
             app:argType="string"

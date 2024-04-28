@@ -1,12 +1,12 @@
 package com.example.bookgo.domain.usecase
 
-import com.example.bookgo.core.domain.repository.AccountRepository
+import com.example.bookgo.core.domain.firebase.auth.FirebaseAuthApi
 import javax.inject.Inject
 
 class CheckLoginUseCaseImpl @Inject constructor(
-    private val accountsRepository: AccountRepository
+    private val firebaseAuth: FirebaseAuthApi,
 ) : CheckLoginUseCase {
     override suspend operator fun invoke(): Boolean {
-        return accountsRepository.isSignedIn()
+        return firebaseAuth.isUserLoggedIn()
     }
 }
