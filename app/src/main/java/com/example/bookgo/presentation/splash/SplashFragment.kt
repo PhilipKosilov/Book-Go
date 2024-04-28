@@ -30,20 +30,20 @@ class SplashFragment : Fragment() {
     private fun setupViewModelObservers() {
         viewModel.isLoggedIn.observe(this) {
             if (viewModel.isLoggedIn.requireValue()) {
-                launchMainScreen()
+                navigateToMainScreen()
             } else {
-                launchAuthorization()
+                navigateToAuthorization()
             }
         }
     }
 
-    private fun launchMainScreen() {
-        val direction = SplashFragmentDirections.actionLoginFragmentToTabsFragment()
+    private fun navigateToMainScreen() {
+        val direction = SplashFragmentDirections.actionSplashFragmentToTabsFragment()
         findNavController().navigate(direction)
     }
 
-    private fun launchAuthorization() {
-        val direction = SplashFragmentDirections.actionLoginFragmentToAuthGraph()
+    private fun navigateToAuthorization() {
+        val direction = SplashFragmentDirections.actionSplashFragmentToAuthGraph()
         findNavController().navigate(direction)
     }
 }

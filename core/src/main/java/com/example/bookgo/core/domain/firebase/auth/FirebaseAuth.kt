@@ -1,6 +1,7 @@
 package com.example.bookgo.core.domain.firebase.auth
 
 import com.example.bookgo.core.domain.firebase.state.LoginState
+import com.example.bookgo.core.domain.firebase.state.LogoutState
 import com.example.bookgo.core.domain.firebase.state.RegistrationState
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseNetworkException
@@ -76,4 +77,8 @@ class FirebaseAuth @Inject constructor() : FirebaseAuthApi {
     override fun isUserLoggedIn(): Boolean = currentUser() != null
 
     override fun currentUser(): FirebaseUser? = firebaseAuth.currentUser
+    override fun logout(): LogoutState {
+        firebaseAuth.signOut()
+        return LogoutState.Success
+    }
 }

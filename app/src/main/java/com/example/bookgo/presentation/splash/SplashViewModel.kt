@@ -1,18 +1,21 @@
 package com.example.bookgo.presentation.splash
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bookgo.core.domain.firebase.connection.FirebaseConnection
 import com.example.bookgo.domain.usecase.CheckLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val checkLoginUseCase: CheckLoginUseCase
+    private val checkLoginUseCase: CheckLoginUseCase,
+    private val firebaseConnection: FirebaseConnection,
 ) : ViewModel() {
 
     private var _isLoading = MutableLiveData<Boolean>()
@@ -22,10 +25,24 @@ class SplashViewModel @Inject constructor(
     var isLoggedIn: LiveData<Boolean> = _isLoggedIn
 
     init {
-        viewModelScope.launch {
-            delay(1000) // let animation play
+        checkConnection()
+    }
 
-            _isLoggedIn.postValue(checkLoginUseCase())
+    private fun checkConnection() {
+        viewModelScope.launch(Dispatchers.Default) {
+            if (firebaseConnection.waitConnection()) {
+                checkUserLoggedIn()
+            } else {
+                // todo send toast "No connection to Firebase"
+                Log.i("kosilov", "SplashViewModel.checkConnection: can't connect to Firebase")
+            }
+        }
+    }
+
+    private fun checkUserLoggedIn() {
+        viewModelScope.launch(Dispatchers.Default) {
+            val isUserLoggedIn = checkLoginUseCase()
+            _isLoggedIn.postValue(isUserLoggedIn)
             _isLoading.postValue(false)
         }
     }
