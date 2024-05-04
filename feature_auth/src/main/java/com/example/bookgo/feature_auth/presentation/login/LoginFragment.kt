@@ -2,14 +2,12 @@ package com.example.bookgo.feature_auth.presentation.login
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import com.example.bookgo.core.data.models.entities.LoginData
-import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +24,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding = FragmentLoginBinding.bind(view)
 
         observeViewModelState()
-        observeErrorToastEvent()
         setupButtonListeners()
     }
 
@@ -82,16 +79,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             .fromUri(DEEPLINK_TO_MAIN.toUri())
             .build()
         findNavController().navigate(request)
-    }
-
-    private fun observeErrorToastEvent() {
-        viewModel.showErrorToast.observeEvent(viewLifecycleOwner) { toastEvent ->
-            toastEvent?.let {
-                Toast.makeText(requireContext(), toastEvent.messageResId, toastEvent.duration)
-                    .show()
-                binding.passwordEditText.text?.clear()
-            }
-        }
     }
 
     private fun onSignUpButtonPressed() {

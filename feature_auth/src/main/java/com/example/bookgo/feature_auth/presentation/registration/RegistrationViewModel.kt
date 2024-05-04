@@ -8,15 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.data.models.entities.RegistrationData
 import com.example.bookgo.core.domain.firebase.mapper.FirebaseStateMapper
 import com.example.bookgo.core.domain.firebase.state.RegistrationState
-import com.example.bookgo.core.domain.models.ToastEvent
 import com.example.bookgo.core.domain.validation.mapper.ValidationMapper
 import com.example.bookgo.core.domain.validation.usecase.email.ValidateEmailUseCase
 import com.example.bookgo.core.domain.validation.usecase.name.ValidateNameUseCase
 import com.example.bookgo.core.domain.validation.usecase.password.ValidateConfirmPasswordUseCase
 import com.example.bookgo.core.domain.validation.usecase.password.ValidatePasswordUseCase
-import com.example.bookgo.core.utils.livedata.MutableLiveEvent
-import com.example.bookgo.core.utils.livedata.publishEvent
-import com.example.bookgo.core.utils.livedata.toLiveEvent
+import com.example.bookgo.core.utils.manager.ToastEvent
+import com.example.bookgo.core.utils.manager.ToastManager
 import com.example.bookgo.feature_auth.domain.usecase.RegistrationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -31,14 +29,12 @@ class RegistrationViewModel @Inject constructor(
     private val validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
     private val validationMapper: ValidationMapper,
     private val firebaseStateMapper: FirebaseStateMapper,
+    private val toastManager: ToastManager,
 ) : ViewModel() {
 
     private var stateValue = State()
     private val _state = MutableLiveData(stateValue)
     val state: LiveData<State> = _state
-
-    private val _showErrorToast = MutableLiveEvent<ToastEvent?>()
-    val showErrorToast = _showErrorToast.toLiveEvent()
 
     fun register(data: RegistrationData) {
         viewModelScope.launch {
@@ -51,7 +47,8 @@ class RegistrationViewModel @Inject constructor(
                     is RegistrationState.UserAlreadyExists,
                     is RegistrationState.NetworkFailure,
                     is RegistrationState.UnknownFailure -> {
-                        showToast(firebaseStateMapper.toMessageId(registrationResult))
+                        val messageId = firebaseStateMapper.toMessageId(registrationResult)
+                        toastManager.sendToast(ToastEvent(messageId))
                     }
                 }
             }
@@ -81,10 +78,6 @@ class RegistrationViewModel @Inject constructor(
 
         return !usernameValidation.isError && !emailValidation.isError
                 && !passwordValidation.isError && !confirmPasswordValidation.isError
-    }
-
-    private fun showToast(@StringRes messageId: Int) {
-        _showErrorToast.publishEvent(ToastEvent(messageResId = messageId))
     }
 
     private fun updateState(state: State) {
