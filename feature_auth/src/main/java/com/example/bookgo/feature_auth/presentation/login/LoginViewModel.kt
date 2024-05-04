@@ -8,13 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.bookgo.core.data.models.entities.LoginData
 import com.example.bookgo.core.domain.firebase.mapper.FirebaseStateMapper
 import com.example.bookgo.core.domain.firebase.state.LoginState
-import com.example.bookgo.core.domain.models.ToastEvent
 import com.example.bookgo.core.domain.validation.mapper.ValidationMapper
 import com.example.bookgo.core.domain.validation.usecase.email.ValidateEmailUseCase
 import com.example.bookgo.core.domain.validation.usecase.password.ValidatePasswordUseCase
-import com.example.bookgo.core.utils.livedata.MutableLiveEvent
-import com.example.bookgo.core.utils.livedata.publishEvent
-import com.example.bookgo.core.utils.livedata.toLiveEvent
+import com.example.bookgo.core.utils.manager.ToastEvent
+import com.example.bookgo.core.utils.manager.ToastManager
 import com.example.bookgo.feature_auth.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,15 +25,13 @@ class LoginViewModel @Inject constructor(
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val validationMapper: ValidationMapper,
     private val firebaseStateMapper: FirebaseStateMapper,
+    private val toastManager: ToastManager,
 ) : ViewModel() {
 
     // todo: add loading animation
     private var stateValue = State()
     private val _state = MutableLiveData(stateValue)
     val state: LiveData<State> = _state
-
-    private val _showErrorToast = MutableLiveEvent<ToastEvent?>()
-    val showErrorToast = _showErrorToast.toLiveEvent()
 
     fun login(data: LoginData) {
         viewModelScope.launch {
@@ -49,7 +45,7 @@ class LoginViewModel @Inject constructor(
                     is LoginState.InvalidCredentials,
                     is LoginState.UnknownFailure -> {
                         firebaseStateMapper.toMessageId(loginResult)?.let { messageId ->
-                            showToast(messageId)
+                            toastManager.sendToast(ToastEvent(messageId))
                         }
                     }
                 }
@@ -71,10 +67,6 @@ class LoginViewModel @Inject constructor(
         updateState(newState)
 
         return !emailValidation.isError && !passwordValidation.isError
-    }
-
-    private fun showToast(@StringRes messageId: Int) {
-        _showErrorToast.publishEvent(ToastEvent(messageResId = messageId))
     }
 
     private fun updateState(state: State) {

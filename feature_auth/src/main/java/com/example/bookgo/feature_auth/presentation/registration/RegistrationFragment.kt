@@ -2,13 +2,11 @@ package com.example.bookgo.feature_auth.presentation.registration
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bookgo.core.data.models.entities.RegistrationData
-import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.feature_auth.R
 import com.example.bookgo.feature_auth.databinding.FragmentRegistrationBinding
 import com.example.bookgo.feature_auth.presentation.login.LoginFragment
@@ -32,7 +30,6 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
         }
 
         observeViewModelState()
-        observeToastEvent()
     }
 
     private fun observeViewModelState() {
@@ -62,14 +59,6 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     private fun processConfirmPasswordError(errorMessageId: Int?) {
         binding.repeatPasswordTextInput.error = errorMessageId?.let { getString(it) }
-    }
-
-    private fun observeToastEvent() {
-        viewModel.showErrorToast.observeEvent(viewLifecycleOwner) { toastEvent ->
-            toastEvent?.let {
-                Toast.makeText(requireContext(), toastEvent.messageResId, toastEvent.duration).show()
-            }
-        }
     }
 
     private fun onRegisterButtonPressed() {

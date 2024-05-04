@@ -1,4 +1,7 @@
 <resources>
+    <!--  Splash  -->
+    <string name="connection_failed">Connection failed</string>
+
     <!--  Login  -->
     <string name="sign_in">Sign in</string>
     <string name="sign_in_paragraph">Sign in to continue</string>

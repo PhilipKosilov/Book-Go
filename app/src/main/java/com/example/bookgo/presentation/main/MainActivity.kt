@@ -2,6 +2,8 @@ package com.example.bookgo.presentation.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -11,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bookgo.R
+import com.example.bookgo.core.utils.livedata.observeEvent
 import com.example.bookgo.databinding.ActivityMainBinding
 import com.example.bookgo.presentation.tabs.TabsFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +21,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel: MainViewModel by viewModels()
 
     private val navHostFragment: NavHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.nav_container) as NavHostFragment
@@ -57,6 +62,15 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
         setupActionBar()
+        observeToastEvents()
+    }
+
+    private fun observeToastEvents() {
+        viewModel.toastLiveEvent.observeEvent(lifecycleOwner = this) { toastEvent ->
+            toastEvent?.let {
+                Toast.makeText(applicationContext, toastEvent.messageResId, toastEvent.duration).show()
+            }
+        }
     }
 
     private fun setupActionBar() {
